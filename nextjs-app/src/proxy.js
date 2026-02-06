@@ -9,7 +9,7 @@ async function verifyToken(token) {
     return await jwtVerify(token, secret);
 }
 
-export async function middleware(request) {
+export async function proxy(request) {
     const token = request.cookies.get("token")?.value;
 
     // Pages that don't require authentication
@@ -21,6 +21,20 @@ export async function middleware(request) {
         return isPublicPath
             ? NextResponse.next()
             : NextResponse.redirect(new URL('/login', request.url));
+    }
+
+    // Has token - verify it
+    try {
+        await verifyToken(token);
+        // Valid token: redirect away from login/register, otherwise continue
+        return isPublicPath
+            ? NextResponse.redirect(new URL('/', request.url))
+            : NextResponse.next();
+    } catch {
+        // Invalud token: allow login/register, block every thing else
+            return isPublicPath
+            ? NextResponse.next()
+            : NextResponse.redirect(new URL('/login', request.url));    
     }
 }
 

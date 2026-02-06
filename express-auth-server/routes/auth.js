@@ -5,6 +5,14 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+function createToken(username) {
+    return jwt.sign(
+        { username },
+        process.env.JWT_SECRET,
+        { expiresIn: '1d' } 
+    );
+}
+
 // Resgister a new user
 router.post("/register", async (req, res) => {
     try {
@@ -48,19 +56,8 @@ router.post("/login", async (req, res) => {
         }
 
         // Create JWT token with username, expires in 1 day
-        const token = jwt.sign(
-            { username: user.username },
-            process.env.JWT_SECRET,
-            { expiresIn: '1d' } 
-        );
-
-        // Send token as HTTP-only cookie
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            maxAge: 24 * 60 * 60 * 1000, // 1 day
-        });
+        const token = createToken(user.username);
+        setTokenCookie(res, token);
 
         res.json({message: "Login successful", username: user.username });
     } catch (error) {
@@ -82,19 +79,8 @@ router.post("/refresh", (req, res) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         // Issue a new token with the same data, fresh expiration
-        const newToken = jwt.sign(
-            { username: decoded.username },
-            process.env.JWT_SECRET,
-            { expiresIn: '1d' }
-        );
-
-        // Replace the old cookie
-        res.cookie("token", newToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            maxAge: 24 * 60 * 60 * 1000, // 1 day
-        });
+        const newToken = createToken(decoded.username);
+        setTokenCookie(res, newToken);
 
         res.json({ message: "Token refreshed", username: decodced.username });
     } catch (error) {

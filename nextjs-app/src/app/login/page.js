@@ -31,14 +31,14 @@ export default function Login() {
     return (
         <div className="min-h-screen flex items-center justify-center">
             <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow-md w-80">
-                <h1 className="text-2xl font-bold mb-8 text-center">Login</h1>
+                <h1 className="text-2xl font-bold mb-8 text-center text-black">Login</h1>
                 {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
                 <input
                     type="text"
                     placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="w-full p-2 mb-3 border rounded"  
+                    className="w-full p-2 mb-3 border rounded text-black"  
                     required
                 />
                 <input
@@ -46,7 +46,7 @@ export default function Login() {
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full p-2 mb-4 border rounded"
+                    className="w-full p-2 mb-4 border rounded text-black"
                     required
                 />
                 <button
@@ -55,7 +55,7 @@ export default function Login() {
                 >
                     Login
                 </button>
-                <p className="text-sm text-center mt-3">
+                <p className="text-sm text-center mt-3 text-black">
                     No account? <Link href="/register" className="text-blue-500">Register here</Link>
                 </p>
             </form>
