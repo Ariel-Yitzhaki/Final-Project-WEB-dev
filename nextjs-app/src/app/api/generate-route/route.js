@@ -54,7 +54,7 @@ export async function POST(request) {
                 "Authorization": `Bearer ${process.env.GROQ_API_KEY}`
             },
             body: JSON.stringify({
-                "model": "llama3-70b-versatile",
+                "model": "llama-3.3-70b-versatile",
                 "messages": [
                     {
                         "role": "system",
@@ -70,6 +70,7 @@ export async function POST(request) {
         });
 
         const data = await response.json();
+        console.log("Groq response:", JSON.stringify(data, null, 2));
 
         // Parse the LLM response as json
         const routeData = JSON.parse(data.choices[0].message.content);

@@ -4,6 +4,7 @@
 import { useState } from "react";
 import axios from "axios";
 import dynamic from "next/dynamic";
+import Navbar from "@/components/Navbar";
 
 // Load map component without server-side rendering (Leaflet requires browser)
 const RouteMap = dynamic(() => import("@/components/RouteMap"), { ssr: false });
@@ -38,72 +39,75 @@ export default function PlanningPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 p-8">
-            <h1 className="text-3xl font-bold mb-6 text-center">מסלולים תכנון</h1>
-            <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-6 rounded shadow">
-                <label className="block mb-2 text-black font-semibold">Country / City</label>
-                <input
-                    type="text"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    className="w-full p-2 mb-4 border rounded text-black"
-                    placeholder="e.g. Switzerland, Tokyo"
-                    required
-                />
+        <>
+            <Navbar />
+            <div className="min-h-screen bg-gray-100 p-8 pt-16">
+                <h1 className="text-3xl font-bold mb-6 text-center">מסלולים תכנון</h1>
+                <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-6 rounded shadow">
+                    <label className="block mb-2 text-black font-semibold">Country / City</label>
+                    <input
+                        type="text"
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        className="w-full p-2 mb-4 border rounded text-black"
+                        placeholder="e.g. Switzerland, Tokyo"
+                        required
+                    />
 
-                <label className="block mb-2 text-black font-semibold">Trip Type</label>
-                <select
-                    value={tripType}
-                    onChange={(e) => setTripType(e.target.value)}
-                    className="w-full p-2 mb-4 border rounded text-black"
-                >
-                    <option value="trek">Trek (Walking)</option>
-                    <option value="cycling">Cycling</option>
-                </select>
+                    <label className="block mb-2 text-black font-semibold">Trip Type</label>
+                    <select
+                        value={tripType}
+                        onChange={(e) => setTripType(e.target.value)}
+                        className="w-full p-2 mb-4 border rounded text-black"
+                    >
+                        <option value="trek">Trek (Walking)</option>
+                        <option value="cycling">Cycling</option>
+                    </select>
 
-                <label className="block mb-2 text-black font-semibold">Duration (days)</label>
-                <input
-                    type="number"
-                    value={days}
-                    onChange={(e) => setDays(Number(e.target.value))}
-                    min={1}
-                    max={3}
-                    className="w-full p-2 mb-4 border rounded text-black"
-                    required
-                />
+                    <label className="block mb-2 text-black font-semibold">Duration (days)</label>
+                    <input
+                        type="number"
+                        value={days}
+                        onChange={(e) => setDays(Number(e.target.value))}
+                        min={1}
+                        max={3}
+                        className="w-full p-2 mb-4 border rounded text-black"
+                        required
+                    />
 
-                <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 disabled:bg-gray-400"
-                >
-                    {loading ? "Generating..." : "Generate Route"}
-                </button>
-            </form>
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 disabled:bg-gray-400"
+                    >
+                        {loading ? "Generating..." : "Generate Route"}
+                    </button>
+                </form>
 
-            {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+                {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
-            {/* Display generated route results */}
-            {result && (
-                <div className="max-w-4xl mx-auto mt-8 bg-white p-6 rounded shadow">
-                    <h2 className="text-2xl font-bold mb-4 text-black">Generated Routes - {result.country}</h2>
+                {/* Display generated route results */}
+                {result && (
+                    <div className="max-w-4xl mx-auto mt-8 bg-white p-6 rounded shadow">
+                        <h2 className="text-2xl font-bold mb-4 text-black">Generated Routes - {result.country}</h2>
 
-                    {/* Map display */}
-                    <RouteMap routes={result.routes} />
+                        {/* Map display */}
+                        <RouteMap routes={result.routes} />
 
-                    {/* Route details per day*/}
-                    <div className="mt-6">
-                        {result.routes.map((route, i) => (
-                            <div key={i} className="mb-4 p-4 border rounded">
-                                <h3 className="font-bold text-black">
-                                    Day {route.day}: {route.start} to {route.end}
-                                </h3>
-                                <p className="text-gray-600">{route.distance_km} km - {route.description}</p>
-                            </div>
-                        ))}
+                        {/* Route details per day*/}
+                        <div className="mt-6">
+                            {result.routes.map((route, i) => (
+                                <div key={i} className="mb-4 p-4 border rounded">
+                                    <h3 className="font-bold text-black">
+                                        Day {route.day}: {route.start} to {route.end}
+                                    </h3>
+                                    <p className="text-gray-600">{route.distance_km} km - {route.description}</p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                </div>
-            )}
-        </div>
+                )}
+            </div>
+        </>
     );
 }
