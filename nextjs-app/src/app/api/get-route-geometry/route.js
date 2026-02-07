@@ -9,7 +9,7 @@ export async function POST(request) {
         const coordinates = waypoints.map(w => [w.lng, w.lat]); // OpenRouteService expects [lng, lat]
 
         const response = await fetch(
-            'https://api.openrouteservice.org/v2/directions/${profile}/geojson',
+            `https://api.openrouteservice.org/v2/directions/${profile}/geojson`,
             {
                 method: "POST",
                 headers: {
@@ -23,7 +23,7 @@ export async function POST(request) {
         const data = await response.json();
 
         if (data.error) {
-            console.error("OpenRouteService error:", data.error);
+            console.error("OpenRouteService error:", data.error.message);
             return NextResponse.json({ error: data.error }, { status: 400 });
         }
 
@@ -34,7 +34,7 @@ export async function POST(request) {
 
         return NextResponse.json({ geometry });
     } catch (error) {
-        console.error("Routing error:", error);
+        console.error("Routing error:", error.message);
         return NextResponse.json({ error: "Failed to get route" }, { status: 500 });
     }
 }

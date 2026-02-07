@@ -92,7 +92,7 @@ export default function PlanningPage() {
                         <h2 className="text-2xl font-bold mb-4 text-black">Generated Routes - {result.country}</h2>
 
                         {/* Map display */}
-                        <RouteMap routes={result.routes} />
+                        <RouteMap routes={result.routes} tripType={tripType} />
 
                         {/* Route details per day*/}
                         <div className="mt-6">

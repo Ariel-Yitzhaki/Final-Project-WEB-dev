@@ -70,14 +70,19 @@ export async function POST(request) {
         });
 
         const data = await response.json();
-        console.log("Groq response:", JSON.stringify(data, null, 2));
 
-        // Parse the LLM response as json
-        const routeData = JSON.parse(data.choices[0].message.content);
+        // Clean the response - remove control characters and extract JSON
+        let content = data.choices[0].message.content;
+        content = content.replace(/[\x00-\x1F\x7F]/g, " "); // Remove control characters
+        const jsonMatch = content.match(/\{[\s\S]*\}/); // Extract JSON object from the response
+        if (!jsonMatch) {
+            throw new Error("No valid JSON found in response");
+        }
+        const routeData = JSON.parse(jsonMatch[0]);
 
         return NextResponse.json(routeData);
     } catch (error) {
-        console.error("Error generating route:", error);
+        console.error("Error generating route:", error.message);
         return NextResponse.json({ message: "Failed to generate route" }, { status: 500 });
     }
 }
