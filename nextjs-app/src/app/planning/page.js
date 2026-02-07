@@ -3,6 +3,10 @@
 // Route planning page- user inputs trip details, LLM generates routes
 import { useState } from "react";
 import axios from "axios";
+import dynamic from "next/dynamic";
+
+// Load map component without server-side rendering (Leaflet requires browser)
+const RouteMap = dynamic(() => import("@/components/RouteMap"), { ssr: false });
 
 export default function PlanningPage() {
     const [location, setLocation] = useState(""); // Country or city input
@@ -78,6 +82,28 @@ export default function PlanningPage() {
             </form>
 
             {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+
+            {/* Display generated route results */}
+            {result && (
+                <div className="max-w-4xl mx-auto mt-8 bg-white p-6 rounded shadow">
+                    <h2 className="text-2xl font-bold mb-4 text-black">Generated Routes - {result.country}</h2>
+
+                    {/* Map display */}
+                    <RouteMap routes={result.routes} />
+
+                    {/* Route details per day*/}
+                    <div className="mt-6">
+                        {result.routes.map((route, i) => (
+                            <div key={i} className="mb-4 p-4 border rounded">
+                                <h3 className="font-bold text-black">
+                                    Day {route.day}: {route.start} to {route.end}
+                                </h3>
+                                <p className="text-gray-600">{route.distance_km} km - {route.description}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
