@@ -99,4 +99,10 @@ router.post("/refresh", (req, res) => {
     }
 });
 
+// Logout - clear the token cookie
+router.post("/logout", (req, res) => {
+    res.clearCookie("token");
+    res.json({ message: "Logged out successfully" });
+});
+
 module.exports = router;
