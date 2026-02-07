@@ -9,14 +9,24 @@ function createToken(username) {
     return jwt.sign(
         { username },
         process.env.JWT_SECRET,
-        { expiresIn: '1d' } 
+        { expiresIn: '1d' }
     );
+}
+
+// Helper function to set JWT token in HTTP-only cookie
+function setTokenCookie(res, token) {
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: 'lax',
+        maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
 }
 
 // Resgister a new user
 router.post("/register", async (req, res) => {
     try {
-        const {username, password } = req.body;
+        const { username, password } = req.body;
 
         // Check if user already exists
         const existingUser = await User.findOne({ username });
@@ -35,7 +45,7 @@ router.post("/register", async (req, res) => {
         res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
         res.status(500).json({ message: "Server error" });
-    }   
+    }
 });
 
 // Login an existing user
@@ -59,8 +69,9 @@ router.post("/login", async (req, res) => {
         const token = createToken(user.username);
         setTokenCookie(res, token);
 
-        res.json({message: "Login successful", username: user.username });
+        res.json({ message: "Login successful", username: user.username });
     } catch (error) {
+        console.error("Login error:", error);
         res.status(500).json({ message: "Server error" });
     }
 });
