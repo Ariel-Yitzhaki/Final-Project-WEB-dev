@@ -1,10 +1,10 @@
 // API route that fetches 3-day weather forecast from OpenWeatherMap
 import { NextResponse } from "next/server";
 
-export async function GET(request) {
+export async function POST(request) {
     try {
         const { lat, lon } = await request.json();
-
+        console.log("Weather request:", lat, lon, process.env.OPENWEATHER_API_KEY ? "Key exists" : "No key");
         const response = await fetch(
             `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&cnt=24&appid=${process.env.OPENWEATHER_API_KEY}`
         );

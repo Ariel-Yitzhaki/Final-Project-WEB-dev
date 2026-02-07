@@ -37,9 +37,9 @@ export default function PlanningPage() {
             if (res.data.routes && res.data.routes[0]?.waypoints?.[0]) {
                 const startPoint = res.data.routes[0].waypoints[0];
                 try {
-                    const weatherRes = await axios.get("/api/get-weather", {
-                        last: startPoint.lat,
-                        lng: startPoint.lng
+                    const weatherRes = await axios.post("/api/get-weather", {
+                        lat: startPoint.lat,
+                        lon: startPoint.lng
                     });
                     setWeather(weatherRes.data.forecasts);
                 } catch {
