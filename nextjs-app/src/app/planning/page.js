@@ -16,6 +16,7 @@ export default function PlanningPage() {
     const [loading, setLoading] = useState(false); // Loading state white generating
     const [result, setResult] = useState(null); // Generated route result
     const [error, setError] = useState(""); // Error message
+    const [weather, setWeather] = useState(null); // Weather data for route
 
     // Sends trip details to API route, which cals Groq LLM
     async function handleSubmit(e) {
@@ -31,6 +32,20 @@ export default function PlanningPage() {
                 days
             });
             setResult(res.data);
+
+            // Fetch weather for the starting point
+            if (res.data.routes && res.data.routes[0]?.waypoints?.[0]) {
+                const startPoint = res.data.routes[0].waypoints[0];
+                try {
+                    const weatherRes = await axios.get("/api/get-weather", {
+                        last: startPoint.lat,
+                        lng: startPoint.lng
+                    });
+                    setWeather(weatherRes.data.forecasts);
+                } catch {
+                    setWeather(null);
+                }
+            }
         } catch (err) {
             setError(err.response?.data?.message || "Failed to generate route");
         } finally {
@@ -93,6 +108,27 @@ export default function PlanningPage() {
 
                         {/* Map display */}
                         <RouteMap routes={result.routes} tripType={tripType} />
+
+                        {/* Weather forecast */}
+                        {weather && (
+                            <div className="mt-6 p-4 border rounded">
+                                <h3 className="font-bold text-black mb-3">תחזית מזג אוויר ל-3 ימים</h3>
+                                <div className="flex gap-4">
+                                    {weather.map((day, i) => (
+                                        <div key={i} className="text-center p-3 bg-gray-100 rounded flex-1">
+                                            <p className="font-semibold text-black">{day.date}</p>
+                                            <img
+                                                src={`https://openweathermap.org/img/wn/${day.icon}@2x.png`}
+                                                alt={day.description}
+                                                className="mx-auto"
+                                            />
+                                            <p className="text-black">{day.temp}°C</p>
+                                            <p className="text-gray-600 text-sm">{day.description}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
                         {/* Route details per day*/}
                         <div className="mt-6">
