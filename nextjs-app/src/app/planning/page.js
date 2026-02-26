@@ -1,7 +1,7 @@
 "use client";
 
 // Route planning page- user inputs trip details, LLM generates routes
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
@@ -15,10 +15,17 @@ export default function PlanningPage() {
     const [days, setDays] = useState(1); // Trip duration in days
     const [loading, setLoading] = useState(false); // Loading state white generating
     const [result, setResult] = useState(null); // Generated route result
+    const [resultTripType, setResultTripType] = useState(null); // Trip type used for the result (to avoid issues if user changes type after generation)
     const [error, setError] = useState(""); // Error message
     const [weather, setWeather] = useState(null); // Weather data for route
     const [image, setImage] = useState(null); // Location image from Unsplash
     const [saved, setSaved] = useState(false); // Whether the route has been saved to history
+    // Reset days to minimum when trip type changes
+    useEffect(() => {
+        if (tripType === "cycling" && days < 2) {
+            setDays(2);
+        }
+    }, [tripType]);
 
     // Sends trip details to API route, which cals Groq LLM
     async function handleSubmit(e) {
@@ -26,6 +33,7 @@ export default function PlanningPage() {
         setLoading(true);
         setError("");
         setResult(null);
+        setResultTripType(tripType);
 
         try {
             const res = await axios.post("/api/generate-route", {
@@ -82,7 +90,7 @@ export default function PlanningPage() {
         <>
             <Navbar />
             <div className="min-h-screen bg-gray-100 p-8 pt-16">
-                <h1 className="text-3xl font-bold mb-6 text-center">מסלולים תכנון</h1>
+                <h1 className="text-3xl font-bold mb-6 text-center">Trip Planner</h1>
                 <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-6 rounded shadow">
                     <label className="block mb-2 text-black font-semibold">Country / City</label>
                     <input
@@ -109,7 +117,7 @@ export default function PlanningPage() {
                         type="number"
                         value={days}
                         onChange={(e) => setDays(Number(e.target.value))}
-                        min={1}
+                        min={tripType === "cycling" ? 2 : 1}
                         max={3}
                         className="w-full p-2 mb-4 border rounded text-black"
                         required
@@ -132,7 +140,7 @@ export default function PlanningPage() {
                         <h2 className="text-2xl font-bold mb-4 text-black">Generated Routes - {result.country}</h2>
 
                         {/* Map display */}
-                        <RouteMap routes={result.routes} tripType={tripType} />
+                        <RouteMap routes={result.routes} tripType={resultTripType} />
 
                         {/* Location image from Unsplash */}
                         {image && (
@@ -149,7 +157,7 @@ export default function PlanningPage() {
                         {/* Weather forecast */}
                         {weather && (
                             <div className="mt-6 p-4 border rounded">
-                                <h3 className="font-bold text-black mb-3">תחזית מזג אוויר ל-3 ימים</h3>
+                                <h3 className="font-bold text-black mb-3">Forecast for the next 3 days</h3>
                                 <div className="flex gap-4">
                                     {weather.map((day, i) => (
                                         <div key={i} className="text-center p-3 bg-gray-100 rounded flex-1">
@@ -172,7 +180,7 @@ export default function PlanningPage() {
                             {result.routes.map((route, i) => (
                                 <div key={i} className="mb-4 p-4 border rounded">
                                     <h3 className="font-bold text-black">
-                                        Day {route.day}: {route.start} to {route.end}
+                                        Day {route.day}: {route.start}
                                     </h3>
                                     <p className="text-gray-600">{route.distance_km} km - {route.description}</p>
                                 </div>

@@ -8,8 +8,9 @@ export async function POST(request) {
         // Build the prompt based on trip type
         const prompt = tripType === "cycling"
             ? `Plan a ${days}-day cycling route in ${location}. 
-                Each day should be 30-70 km. The route should go from town to town, following real roads.
-                IMPORTANT: Use coordinates of real towns, villages, or landmarks that are on actual roads. Do not invent coordinates.
+                Each day should be 30-70 km, going from city to city.
+                If ${location} is a city, plan routes to nearby cities/towns within cycling distance.
+                Use only well-known cities, towns, or tourist attractions as waypoints.
                 Return a JSON object with this exact structure:
                 {
                     "routes": [
@@ -29,10 +30,11 @@ export async function POST(request) {
                 Include at least 5 waypoints per day that follow real roads. 
                 All waypoints MUST be on land (not in water, rivers, or oceans).
                 Return ONLY valid JSON, no extra text.`
-            : `Plan ${Math.min(days, 3)} circular trek routes in ${location}. 
-                IMPORTANT: Each route MUST be circular - it must start and end at the EXACT same location/trailhead.
-                Each route should be 5-10 km, following real hiking trails in a loop.
-                Use coordinates of real trailheads, parks, or landmarks that are on actual hiking paths. Do not invent coordinates.
+            : `Plan ${Math.min(days, 3)} round trip trek routes in ${location}. 
+                If ${location} is a country, first pick a famous city in that country and plan the trek there.
+                Each route MUST be a round trip - start and end at the same point.
+                Each route should be 5-10 km.
+                Use only well-known parks, nature reserves, or tourist attractions as waypoints.
                 Return a JSON object with this exact structure:
                 {
                     "routes": [

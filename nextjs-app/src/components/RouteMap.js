@@ -40,8 +40,7 @@ export default function RouteMap({ routes, tripType }) {
                         body: JSON.stringify({ waypoints, profile })
                     });
                     const data = await res.json();
-                    console.log("OpenRouteService response:", data);
-                    console.log("Waypoints sent:", waypoints);
+                    
                     results.push(data.geometry || route.waypoints.map(w => [w.lat, w.lng]));
                 } catch (error) {
                     results.push(route.waypoints.map(w => [w.lat, w.lng])); // Fallback to straight lines on error
@@ -63,7 +62,7 @@ export default function RouteMap({ routes, tripType }) {
     const colors = ["blue", "red", "green"];
 
     return (
-        <MapContainer key={JSON.stringify(center)} center={center} zoom={10} className="h-96 w-full rounded">
+        <MapContainer key={JSON.stringify(center)} center={center} zoom={10} className="h-[500px] w-full rounded">
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution="&copy; OpenStreetMap contributors"
