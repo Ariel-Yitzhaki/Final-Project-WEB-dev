@@ -1,7 +1,7 @@
 // API route that fetches a country image from Unsplash
 import { NextResponse } from 'next/server';
 
-export async function POSt(request) {
+export async function POST(request) {
     try {
         const { country } = await request.json();
 

@@ -17,6 +17,7 @@ export default function PlanningPage() {
     const [result, setResult] = useState(null); // Generated route result
     const [error, setError] = useState(""); // Error message
     const [weather, setWeather] = useState(null); // Weather data for route
+    const [image, setImage] = useState(null); // Location image from Unsplash
 
     // Sends trip details to API route, which cals Groq LLM
     async function handleSubmit(e) {
@@ -48,6 +49,14 @@ export default function PlanningPage() {
             }
         } catch (err) {
             setError(err.response?.data?.message || "Failed to generate route");
+        }
+        try {
+            const imageRes = await axios.post("/api/get-image", {
+                country: location
+            });
+            setImage(imageRes.data);
+        } catch {
+            setImage(null);
         } finally {
             setLoading(false);
         }
@@ -109,6 +118,18 @@ export default function PlanningPage() {
                         {/* Map display */}
                         <RouteMap routes={result.routes} tripType={tripType} />
 
+                        {/* Location image from Unsplash */}
+                        {image && (
+                            <div className="mt-6">
+                                <img
+                                    src={image.url}
+                                    alt={image.alt}
+                                    className="w-full h-64 object-cover rounded"
+                                />
+                                <p className="text-gray-500 text-sm mt-1">Photo by {image.credit} on Unsplash</p>
+                            </div>
+                        )}
+                        
                         {/* Weather forecast */}
                         {weather && (
                             <div className="mt-6 p-4 border rounded">
