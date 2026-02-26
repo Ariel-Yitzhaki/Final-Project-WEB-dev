@@ -18,6 +18,7 @@ export default function PlanningPage() {
     const [error, setError] = useState(""); // Error message
     const [weather, setWeather] = useState(null); // Weather data for route
     const [image, setImage] = useState(null); // Location image from Unsplash
+    const [saved, setSaved] = useState(false); // Whether the route has been saved to history
 
     // Sends trip details to API route, which cals Groq LLM
     async function handleSubmit(e) {
@@ -59,6 +60,21 @@ export default function PlanningPage() {
             setImage(null);
         } finally {
             setLoading(false);
+        }
+    }
+
+    // Save approved route to database
+    async function handleApprove() {
+        try {
+            await axios.post("/api/save-route", {
+                location,
+                tripType,
+                routes: result.routes,
+                image
+            });
+            setSaved(true);
+        } catch (err) {
+            console.error("Failed to save route:", err);
         }
     }
 
@@ -129,7 +145,7 @@ export default function PlanningPage() {
                                 <p className="text-gray-500 text-sm mt-1">Photo by {image.credit} on Unsplash</p>
                             </div>
                         )}
-                        
+
                         {/* Weather forecast */}
                         {weather && (
                             <div className="mt-6 p-4 border rounded">
@@ -162,6 +178,18 @@ export default function PlanningPage() {
                                 </div>
                             ))}
                         </div>
+
+                        {/* Approve button to save route to history */}
+                        {!saved ? (
+                            <button
+                                onClick={handleApprove}
+                                className="mt-4 w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
+                            >
+                                Approve and Save Route
+                            </button>
+                        ) : (
+                            <p className="mt-4 text-green-600 text-center font-semibold">Route saved!</p>
+                        )}
                     </div>
                 )}
             </div>

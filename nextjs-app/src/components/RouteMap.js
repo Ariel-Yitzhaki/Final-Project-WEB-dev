@@ -28,14 +28,22 @@ export default function RouteMap({ routes, tripType }) {
 
             for (const route of routes) {
                 try {
+                    // For circular routes (Trekks), add the first waypoint at the end to ensure it loops back
+                    let waypoints = route.waypoints;
+                    if (tripType === "trek" && waypoints.length > 0) {
+                        waypoints = [...waypoints, waypoints[0]];
+                    }
+
                     const res = await fetch("/api/get-route-geometry", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ waypoints: route.waypoints, profile })
+                        body: JSON.stringify({ waypoints, profile })
                     });
                     const data = await res.json();
+                    console.log("OpenRouteService response:", data);
+                    console.log("Waypoints sent:", waypoints);
                     results.push(data.geometry || route.waypoints.map(w => [w.lat, w.lng]));
-                } catch {
+                } catch (error) {
                     results.push(route.waypoints.map(w => [w.lat, w.lng])); // Fallback to straight lines on error
                 }
             }
@@ -64,7 +72,7 @@ export default function RouteMap({ routes, tripType }) {
                 <div key={i}>
                     {/* Draw polyline for route path */}
                     <Polyline
-                        positions={geometries[i] ||route.waypoints.map((w) => [w.lat, w.lng])}
+                        positions={geometries[i] || route.waypoints.map((w) => [w.lat, w.lng])}
                         color={colors[i % colors.length]}
                     />
                     {/* Place markers on each waypoint */}

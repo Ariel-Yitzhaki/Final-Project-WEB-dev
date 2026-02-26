@@ -8,7 +8,8 @@ export async function POST(request) {
         // Build the prompt based on trip type
         const prompt = tripType === "cycling"
             ? `Plan a ${days}-day cycling route in ${location}. 
-                Each day should be 30-70 km. The route should go from city to city, following real roads (not straight lines).
+                Each day should be 30-70 km. The route should go from town to town, following real roads.
+                IMPORTANT: Use coordinates of real towns, villages, or landmarks that are on actual roads. Do not invent coordinates.
                 Return a JSON object with this exact structure:
                 {
                     "routes": [
@@ -25,9 +26,13 @@ export async function POST(request) {
                     ],
                     "country": "${location}"
                 }
-                Include at least 5 waypoints per day that follow real roads. Return ONLY valid JSON, no extra text.`
-            :   `Plan ${Math.min(days, 3)} circular trek routes in ${location}. 
-                Each route should be 5-10 km, starting and ending at the same point, following real trails.
+                Include at least 5 waypoints per day that follow real roads. 
+                All waypoints MUST be on land (not in water, rivers, or oceans).
+                Return ONLY valid JSON, no extra text.`
+            : `Plan ${Math.min(days, 3)} circular trek routes in ${location}. 
+                IMPORTANT: Each route MUST be circular - it must start and end at the EXACT same location/trailhead.
+                Each route should be 5-10 km, following real hiking trails in a loop.
+                Use coordinates of real trailheads, parks, or landmarks that are on actual hiking paths. Do not invent coordinates.
                 Return a JSON object with this exact structure:
                 {
                     "routes": [
@@ -44,7 +49,9 @@ export async function POST(request) {
                     ],
                     "country": "${location}"
                 }
-                Include at least 5 waypoints per route that follow real trails. Return ONLY valid JSON, no extra text.`;
+                Include at least 5 waypoints per route that follow real hiking trails. 
+                All waypoints MUST be on land (not in water, rivers, or oceans).
+                Return ONLY valid JSON, no extra text.`
 
         // Call Groq API
         const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {

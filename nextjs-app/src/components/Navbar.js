@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 // Navigation bar with logout button
 export default function Navbar() {
@@ -21,7 +22,8 @@ export default function Navbar() {
     return (
         <nav style={{
             display: "flex",
-            justifyContent: "flex-end",
+            justifyContent: "space-between",
+            alignItems: "center",
             padding: "20px 30px",
             backgroundColor: "#1e3a5f",
             position: "fixed",
@@ -30,6 +32,13 @@ export default function Navbar() {
             left: 0,
             zIndex: 1000,
         }}>
+
+            <div className="flex gap-4">
+                <Link href="/" className="text-white px-3 py-1 rounded hover:bg-white hover:text-black transition-colors">Home Page</Link>
+                <Link href="/planning" className="text-white px-3 py-1 rounded hover:bg-white hover:text-black transition-colors">Trip Planner</Link>
+                <Link href="/history" className="text-white px-3 py-1 rounded hover:bg-white hover:text-black transition-colors">History</Link>
+            </div>
+
             <button
                 onClick={handleLogout}
                 className="bg-black text-white px-4 py-2 rounded border border-black hover:bg-white hover:text-black cursor-pointer"

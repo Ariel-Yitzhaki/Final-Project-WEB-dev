@@ -5,9 +5,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-function createToken(username) {
+function createToken(userId, username) {
     return jwt.sign(
-        { username },
+        { userId, username },
         process.env.JWT_SECRET,
         { expiresIn: '1d' }
     );
@@ -66,7 +66,7 @@ router.post("/login", async (req, res) => {
         }
 
         // Create JWT token with username, expires in 1 day
-        const token = createToken(user.username);
+        const token = createToken(user._id, user.username);
         setTokenCookie(res, token);
 
         res.json({ message: "Login successful", username: user.username });
@@ -90,7 +90,7 @@ router.post("/refresh", (req, res) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         // Issue a new token with the same data, fresh expiration
-        const newToken = createToken(decoded.username);
+        const newToken = createToken(decoded.userId, decoded.username);
         setTokenCookie(res, newToken);
 
         res.json({ message: "Token refreshed", username: decodced.username });
