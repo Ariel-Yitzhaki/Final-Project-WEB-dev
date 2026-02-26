@@ -28,7 +28,7 @@ export default function Navbar() {
             top: 0,
             right: 0,
             left: 0,
-
+            zIndex: 1000,
         }}>
             <button
                 onClick={handleLogout}

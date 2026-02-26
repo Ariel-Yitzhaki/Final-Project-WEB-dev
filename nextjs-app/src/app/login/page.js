@@ -38,7 +38,7 @@ export default function Login() {
                     placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="w-full p-2 mb-3 border rounded text-black"  
+                    className="w-full p-2 mb-3 border rounded text-black"
                     required
                 />
                 <input
