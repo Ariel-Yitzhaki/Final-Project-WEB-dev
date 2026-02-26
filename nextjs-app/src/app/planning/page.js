@@ -16,6 +16,7 @@ export default function PlanningPage() {
     const [loading, setLoading] = useState(false); // Loading state white generating
     const [result, setResult] = useState(null); // Generated route result
     const [resultTripType, setResultTripType] = useState(null); // Trip type used for the result (to avoid issues if user changes type after generation)
+    const [routeGeometries, setRouteGeometries] = useState([]); // Saved geometries from RouteMap
     const [error, setError] = useState(""); // Error message
     const [weather, setWeather] = useState(null); // Weather data for route
     const [image, setImage] = useState(null); // Location image from Unsplash
@@ -73,7 +74,17 @@ export default function PlanningPage() {
 
     // Save approved route to database
     async function handleApprove() {
+        if (!routeGeometries || routeGeometries.length === 0) {
+            setError("Please wait for the route to finish loading");
+            return;
+        }
         try {
+            // Combine routes with their geometries
+            const routesWithGeometry = result.routes.map((route, i) => ({
+                ...route,
+                geometry: routeGeometries?.[i] || []
+            }));
+
             await axios.post("/api/save-route", {
                 location,
                 tripType,
@@ -140,7 +151,7 @@ export default function PlanningPage() {
                         <h2 className="text-2xl font-bold mb-4 text-black">Generated Routes - {result.country}</h2>
 
                         {/* Map display */}
-                        <RouteMap routes={result.routes} tripType={resultTripType} />
+                        <RouteMap routes={result.routes} tripType={resultTripType} onGeometryLoaded={setRouteGeometries} />
 
                         {/* Location image from Unsplash */}
                         {image && (

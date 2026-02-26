@@ -15,13 +15,19 @@ L.Icon.Default.mergeOptions({
 
 });
 
-export default function RouteMap({ routes, tripType }) {
+export default function RouteMap({ routes, tripType, onGeometryLoaded, savedGeometries }) {
     if (!routes || routes.length === 0) return null;
 
     const [geometries, setGeometries] = useState([]);
 
     // Fetch real road geometry for each route
     useEffect(() => {
+        // If saved geometries provided, use them instead of fetching
+        if (savedGeometries && savedGeometries.length > 0) {
+            setGeometries(savedGeometries);
+            return;
+        }
+
         async function fetchGeometries() {
             const profile = tripType === "cycling" ? "cycling-regular" : "foot-hiking";
             const results = [];
@@ -33,23 +39,24 @@ export default function RouteMap({ routes, tripType }) {
                     if (tripType === "trek" && waypoints.length > 0) {
                         waypoints = [...waypoints, waypoints[0]];
                     }
-
                     const res = await fetch("/api/get-route-geometry", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ waypoints, profile })
                     });
                     const data = await res.json();
-                    
                     results.push(data.geometry || route.waypoints.map(w => [w.lat, w.lng]));
                 } catch (error) {
                     results.push(route.waypoints.map(w => [w.lat, w.lng])); // Fallback to straight lines on error
                 }
             }
             setGeometries(results);
+            if (onGeometryLoaded) {
+                onGeometryLoaded(results);
+            }
         }
         fetchGeometries();
-    }, [routes, tripType]);
+    }, [routes, tripType, savedGeometries]);
 
     // Collect all waypoints to calculate map center 
     const allPoints = routes.flatMap((r) => r.waypoints.map((w) => [w.lat, w.lng]));

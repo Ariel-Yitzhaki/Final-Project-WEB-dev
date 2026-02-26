@@ -121,7 +121,11 @@ export default function HistoryPage() {
 
                                         {/* Map display */}
                                         <div className="mb-4">
-                                            <RouteMap routes={selectedRoute.routes} tripType={selectedRoute.tripType} />
+                                            <RouteMap
+                                                routes={selectedRoute.routes}
+                                                tripType={selectedRoute.tripType}
+                                                savedGeometries={selectedRoute.routes.map(r => r.geometry || [])}
+                                            />
                                         </div>
 
                                         {/* Route details */}

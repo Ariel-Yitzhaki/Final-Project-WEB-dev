@@ -27,6 +27,7 @@ const RouteSchema = new mongoose.Schema({
             lng: Number,
             name: String,
         }],
+    geometry: [[Number]] // Saved route geometry [lat, lng] pairs
     }],
     image: {
         url: String,

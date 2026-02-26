@@ -74,7 +74,7 @@ export async function POST(request) {
                         "content": prompt,
                     }
                 ],
-                "temperature": 0.7,
+                "temperature": 1.0,
             }),
         });
 
