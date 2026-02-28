@@ -83,7 +83,29 @@ export default function RouteMap({ routes, tripType, onGeometryLoaded, savedGeom
                     />
                     {/* Place markers on each waypoint */}
                     {route.waypoints.map((w, j) => (
-                        <Marker key={j} position={[w.lat, w.lng]}>
+                        <Marker 
+                            key={j} 
+                            position={[w.lat, w.lng]}
+                            icon={L.divIcon({
+                                className: 'custom-marker',
+                                html: `<div style="
+                                    background-color: ${colors[i % colors.length]};
+                                    color: white;
+                                    width 24px;
+                                    height: 24px;
+                                    border-radius: 50%;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    font-weight: bold;
+                                    font-size: 12px;
+                                    border: 2px solid white;
+                                    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+                                    ">${j + 1}</div>`,
+                                iconSize: [24, 24],
+                                iconAnchor: [12, 12],
+                            })}
+                        >
                             <Popup>
                                 <strong>{w.name}</strong>
                                 <br />
