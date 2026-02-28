@@ -5,7 +5,7 @@ export async function POST(request) {
     try {
         const { lat, lon } = await request.json();
         const response = await fetch(
-            `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&cnt=24&appid=${process.env.OPENWEATHER_API_KEY}`
+            `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&cnt=32&appid=${process.env.OPENWEATHER_API_KEY}`
         );
 
         const data = await response.json();
@@ -14,8 +14,8 @@ export async function POST(request) {
             return NextResponse.json({ error: data.message }, { status: 400 });
         }
 
-        // Extract one forecast per day (every 8th item = 24 hours apart)
-        const dailyForecasts = [0, 8, 16].map(i => {
+        // Extract one forecast per day starting from tomorrow (every 8th item = 24 hours apart)
+        const dailyForecasts = [8, 16, 24].map(i => {
             const item = data.list[i];
             return {
                 date: item.dt_txt.split(" ")[0],

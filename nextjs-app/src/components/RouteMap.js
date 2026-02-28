@@ -69,7 +69,7 @@ export default function RouteMap({ routes, tripType, onGeometryLoaded, savedGeom
     const colors = ["blue", "red", "green"];
 
     return (
-        <MapContainer key={JSON.stringify(center)} center={center} zoom={10} className="h-[500px] w-full rounded">
+        <MapContainer key={JSON.stringify(center)} center={center} zoom={10} className="h-[500px] w-full rounded" style={{zIndex: 0 }}>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution="&copy; OpenStreetMap contributors"
