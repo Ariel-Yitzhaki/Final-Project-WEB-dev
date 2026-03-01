@@ -18,7 +18,7 @@ export default function Login() {
         try {
             // Send credentials to your Express auth server
             await axios.post(
-                "http://localhost:5000/api/auth/login",
+                `${process.env.NEXT_PUBLIC_EXPRESS_URL}/api/auth/login`,
                 { username, password },
                 { withCredentials: true } // Includes cookies in request
             );

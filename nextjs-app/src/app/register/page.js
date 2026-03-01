@@ -16,7 +16,7 @@ export default function Register() {
     setError(""); // Clears any previous errors
 
     try {
-      await axios.post("http://localhost:5000/api/auth/register",
+      await axios.post(`${process.env.NEXT_PUBLIC_EXPRESS_URL}/api/auth/register`,
         { username, password });
       setSuccess("Registration successful!");
       setTimeout(() => router.push("/login"), 2000); // Redirect to login page on success
