@@ -17,7 +17,7 @@ function createToken(userId, username) {
 function setTokenCookie(res, token) {
     res.cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: true,
         sameSite: 'none',
         maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
@@ -69,7 +69,7 @@ router.post("/login", async (req, res) => {
         const token = createToken(user._id, user.username);
         setTokenCookie(res, token);
 
-        res.json({ message: "Login successful", username: user.username });
+        res.json({ message: "Login successful", username: user.username, token });
     } catch (error) {
         console.error("Login error:", error);
         res.status(500).json({ message: "Server error" });
