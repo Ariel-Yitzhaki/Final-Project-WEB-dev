@@ -34,6 +34,7 @@ export default function PlanningPage() {
         setLoading(true);
         setError("");
         setResult(null);
+        setSaved(false);
         setResultTripType(tripType);
 
         try {
