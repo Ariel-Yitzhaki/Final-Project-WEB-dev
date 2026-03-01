@@ -25,7 +25,7 @@ function isTokenExpiringSoon(token) {
 // Helper: call Express server to refresh the token
 async function refreshToken(oldToken) {
     try {
-        const response = await fetch('${process.env.EXPRESS_URL}/api/auth/refresh', {
+        const response = await fetch(`${process.env.EXPRESS_URL}/api/auth/refresh`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -33,7 +33,7 @@ async function refreshToken(oldToken) {
             },
             credentials: "include"
         });
-        if (response.ok) return null;
+        if (!response.ok) return null;
         const data = await response.json();
         return data.token;
     } catch (error) {
