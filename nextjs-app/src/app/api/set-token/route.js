@@ -1,12 +1,11 @@
 // API route to set token cookie from same domain
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 
 export async function POST(request) {
     const { token } = await request.json();
+    const response = NextResponse.json({ message: "Token set" });
 
-    const cookieStore = cookies();
-    cookieStore.set("token", token, {
+    response.cookies.set("token", token, {
         httpOnly: true,
         secure: true,
         sameSite: 'none',
@@ -14,5 +13,5 @@ export async function POST(request) {
         path: "/"
     });
 
-    return NextResponse.json({ message: "Token set" });
+    return response;
 }
