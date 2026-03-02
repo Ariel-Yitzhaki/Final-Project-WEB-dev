@@ -21,17 +21,14 @@ export async function POST(request) {
         // Build the prompt based on trip type
         const prompt = tripType === "cycling"
             ? `Plan a ${days}-day cycling route in ${location}. 
-                Each day should be 30-70 km of actual road distance.
+                Each day should be 30-70 km, going from city to city.
                 If ${location} is a city, plan routes to nearby cities/towns within cycling distance.
-                
-                CRITICAL RULES:
-                - Use only well-known cities, towns, or tourist attractions as waypoints.
-                - All waypoints MUST be on or next to paved roads that a cyclist can use.
-                - Do NOT place waypoints in bodies of water, forests without roads, or inaccessible areas.
-                - Include 8-12 waypoints per day spaced along the actual road route to guide the routing engine.
-                - Consecutive waypoints should be no more than 10 km straight-line distance apart.
-                - The sum of straight-line distances between consecutive waypoints should be under 50 km (real road distance will be longer).
-                
+                Each day's route should end where the next day's route begins.
+                Do NOT repeat the same waypoint at the end of one day and the start of the next - the connection is handled automatically.
+
+                All waypoint names must be well-known cities, towns, landmarks, or attractions.
+                Include 8-10 waypoints per day.
+
                 Return a JSON object with this exact structure:
                 {
                     "routes": [
@@ -48,35 +45,39 @@ export async function POST(request) {
                     ],
                     "country": "${location}"
                 }
+                All waypoints MUST be on land (not in water, rivers, or oceans).
                 Return ONLY valid JSON, no extra text.`
-            : `Plan ${Math.min(days, 3)} round trip trek routes in ${location}. 
-                If ${location} is a country, first pick a famous hiking area in that country.
-                Each route MUST be a round trip - start and end at the same point.
-                Each route should be 5-10 km of ACTUAL walking distance along trails (not straight-line distance).
-                
-                CRITICAL RULES:
-                - All waypoints MUST be on or directly next to established hiking trails, roads, or paths.
-                - Do NOT place waypoints on mountain summits, cliff faces, or remote areas without trail access.
-                - Prefer waypoints near trail junctions, villages, parking lots, viewpoints accessible by trail, or marked paths.
-                - Waypoints should be close together (no more than 1-2 km straight-line distance apart) to ensure a routing engine can connect them via real paths.
-                - Include 8-12 waypoints per route to give the routing engine enough guidance to follow the correct trail.
-                - The sum of straight-line distances between consecutive waypoints should be under 6 km (real trail distance will be longer due to terrain).
-                
+            : `Plan ${Math.min(days, 3)} round trip walking routes in ${location}.
+                If ${location} is a country, pick a famous area that best represents it (a major city for cultural countries, a natural area for countries known for outdoor activities).
+
+                Each route MUST be a round trip - the route will be closed automatically, so do NOT include the starting point again as the last waypoint.
+                All routes should be in the same area.
+                Each route should be 5-10 km total walking distance.
+                Each route should have its own "setting" field - "urban" for city walks or "nature" for countryside/mountain hikes.
+                Routes should not overlap.
+                For urban locations: use famous landmarks, squares, museums, markets, parks, and neighborhoods as waypoints.
+                For nature locations: use well-known trailheads, viewpoints, lakes, waterfalls, and villages as waypoints.
+
+                All waypoint names must be well-known landmarks, attractions, or locations.
+                Include 8-10 waypoints per route.
+                Waypoints should not be on water or in inaccessible areas.
+                Waypoints shouldn't form a linear line. If they do that means you don't have the right coordinates for the locations.
                 Return a JSON object with this exact structure:
                 {
                     "routes": [
                         {
                             "day": 1,
-                            "start": "Trailhead Name",
-                            "end": "Same Trailhead Name",
+                            "start": "Starting Point Name",
+                            "end": "Starting Point Name",
                             "distance_km": 7,
                             "description": "Brief description",
+                            "setting": "urban or nature",
                             "waypoints": [
                                 {"lat": 0.0, "lng": 0.0, "name": "Point name"}
                             ]
                         }
                     ],
-                    "country": "${location}"
+                    "country": "${location}",
                 }
                 Return ONLY valid JSON, no extra text.`
 
@@ -127,7 +128,7 @@ export async function POST(request) {
         }
         return NextResponse.json(routeData);
     } catch (error) {
-        console.error("Error generating route:", error.message);
+        console.error("Error generating route:", error.message, error.stack);
         return NextResponse.json({ message: "Failed to generate route" }, { status: 500 });
     }
 }

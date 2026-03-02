@@ -18,7 +18,7 @@ app.use(express.json()); // Parse JSON request bodies
 app.use(cookieParser()); // Parse cookies
 app.use(
     cors({
-        origin: process.env.NEXTJS_URL || "http://localhost:3000", // Allow requests from Next.js
+        origin: [process.env.NEXTJS_URL, "http://localhost:3000"].filter(Boolean), // Allow requests from Next.js
         credentials: true, // Allow cookies to be sent
     })
 );

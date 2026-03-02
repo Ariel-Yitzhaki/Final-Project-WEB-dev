@@ -124,6 +124,7 @@ export default function HistoryPage() {
                                             <RouteMap
                                                 routes={selectedRoute.routes}
                                                 tripType={selectedRoute.tripType}
+                                                setting={selectedRoute.setting}
                                                 savedGeometries={selectedRoute.routes.map(r => r.geometry || [])}
                                             />
                                         </div>

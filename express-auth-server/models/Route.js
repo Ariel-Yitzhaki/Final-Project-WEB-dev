@@ -22,6 +22,7 @@ const RouteSchema = new mongoose.Schema({
         end: String,
         distance_km: Number,
         description: String,
+        setting: String, // "urban" or "nature"
         waypoints: [{
             lat: Number,
             lng: Number,
