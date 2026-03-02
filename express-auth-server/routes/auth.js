@@ -19,7 +19,6 @@ function setTokenCookie(res, token) {
         httpOnly: true,
         secure: true,
         sameSite: 'none',
-        partitioned: true,
         maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 }
@@ -94,7 +93,7 @@ router.post("/refresh", (req, res) => {
         const newToken = createToken(decoded.userId, decoded.username);
         setTokenCookie(res, newToken);
 
-        res.json({ message: "Token refreshed", username: decoded.username });
+        res.json({ message: "Token refreshed", username: decodced.username });
     } catch (error) {
         return res.status(401).json({ message: "Invalid token" });
     }
@@ -102,13 +101,7 @@ router.post("/refresh", (req, res) => {
 
 // Logout - clear the token cookie
 router.post("/logout", (req, res) => {
-    // Must match the attributes used in setTokenCookie
-    res.clearCookie("token", {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'none',
-        partitioned: true,
-    });
+    res.clearCookie("token");
     res.json({ message: "Logged out successfully" });
 });
 

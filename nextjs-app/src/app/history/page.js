@@ -55,8 +55,8 @@ export default function HistoryPage() {
     return (
         <>
             <Navbar />
-            <div className="min-h-screen bg-gray-100 p-8 pt-16">
-                <h1 className="text-3xl font-bold mb-6 text-center">מסלולים היסטוריה</h1>
+            <div className="min-h-screen bg-gray-100 p-8 pt-24">
+                <h1 className="text-3xl font-bold mb-6 text-center text-black">History</h1>
 
                 {loading && <p className="text-center">Loading...</p>}
 

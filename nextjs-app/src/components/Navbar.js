@@ -11,21 +11,14 @@ export default function Navbar() {
     // Call express logout endpoint and redirect to login page
     async function handleLogout() {
         try {
-            // Call Express logout endpoint to clear server-side session
             await fetch(`${process.env.NEXT_PUBLIC_EXPRESS_URL}/api/auth/logout`, {
                 method: "POST",
                 credentials: "include"
             });
-            // Clear the token cookie via Next.js API
-            await fetch("/api/set-token", {
-                method: "POST",
-            });
-
+            await fetch("/api/clear-token", { method: "POST" });
         } catch (error) {
             console.error("Logout failed:", error);
         }
-
-        // Redirect to login page after logout
         router.push("/login");
     }
 
