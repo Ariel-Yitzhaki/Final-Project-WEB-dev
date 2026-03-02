@@ -89,8 +89,8 @@ export default function RouteMap({ routes, tripType, onGeometryLoaded, savedGeom
                             icon={L.divIcon({
                                 className: 'custom-marker',
                                 html: `<div style="
-                                    background-color: ${colors[i % colors.length]};
-                                    color: white;
+                                    background-color: white;
+                                    color: ${colors[i % colors.length]};
                                     width 24px;
                                     height: 24px;
                                     border-radius: 50%;
@@ -99,7 +99,7 @@ export default function RouteMap({ routes, tripType, onGeometryLoaded, savedGeom
                                     justify-content: center;
                                     font-weight: bold;
                                     font-size: 12px;
-                                    border: 2px solid white;
+                                    border: 2px solid ${colors[i % colors.length]};
                                     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
                                     ">${j + 1}</div>`,
                                 iconSize: [24, 24],
