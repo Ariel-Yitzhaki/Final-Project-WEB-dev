@@ -26,7 +26,20 @@ export async function POST(request) {
         const data = await response.json();
         
         if (data.status !== "OK") {
-            console.log("Google Directions error:", data.status, data.error_message);
+            // Fallback: trying to route consecutive pairs
+            const geometry = [];
+            for (let i = 0; i < waypoints.length - 1; i++) {
+                const pairUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${waypoints[i].lat},${waypoints[i].lng}&destination=${waypoints[i+1].lat},${waypoints[i+1].lng}&mode=${mode}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+                const pairRes = await fetch(pairUrl);
+                const pairData = await pairRes.json();
+                if (pairData.status === "OK") {
+                    geometry.push(...decodePolyline(pairData.routes[0].overview_polyline.points));
+                }
+                // Skip segments that can't be routed
+            }
+            if (geometry.length === 0) {
+                return NextResponse.json({ geometry });
+            }
             return NextResponse.json({ error: data.status }, { status: 400 });
         }
         

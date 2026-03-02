@@ -101,8 +101,8 @@ export default function PlanningPage() {
     return (
         <>
             <Navbar />
-            <div className="min-h-screen bg-gray-100 p-8 pt-16">
-                <h1 className="text-3xl font-bold mb-6 text-center">Trip Planner</h1>
+            <div className="min-h-screen bg-gray-100 p-8 pt-24">
+                <h1 className="text-3xl font-bold mb-6 text-center text-black">Plan a trip</h1>
                 <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-6 rounded shadow">
                     <label className="block mb-2 text-black font-semibold">Country / City</label>
                     <input
