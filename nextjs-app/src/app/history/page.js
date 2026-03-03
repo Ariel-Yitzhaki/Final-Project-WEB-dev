@@ -54,7 +54,7 @@ export default function HistoryPage() {
             <Navbar />
             <div className="min-h-screen bg-gray-100 p-8 pt-24">
                 <h1 className="text-3xl font-bold mb-6 text-center text-black">History</h1>
-                {loading && <p className="text-center">Loading...</p>}
+                {loading && <p className="text-center text-black">Loading...</p>}
                 {error && <p className="text-red-500 text-center">{error}</p>}
                 {!loading && !error && routes.length === 0 && (
                     <p className="text-center text-gray-600">No saved routes yet. Plan a trip first!</p>
