@@ -98,14 +98,14 @@ export default function HistoryPage() {
                         {/* Right - map, positioned absolutely so it doesn't push cards */}
                         {selectedRoute && (
                             <div style={{
-                                width: '550px',
+                                width: '600px',
                                 height: '475px',
                                 position: 'absolute',
                                 top: `${mapTop + 155}px`,
                                 left: 'calc(50% + 448px + 34px - 220px)',
                                 borderRadius: '18px',
                                 overflow: 'hidden',
-                                border: '4px solid #070707',
+                                border: '6px solid hsla(0, 23%, 98%, 0.82)',
                                 boxShadow: '0px 3px 25px rgba(0, 0, 0, 0.35)',
                                 zIndex: 10,
                             }}>

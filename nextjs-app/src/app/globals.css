@@ -57,3 +57,8 @@ body {
   left: auto;
   right: 10px;
 }
+
+/* Trying to prevent refresh errors with Leaflet*/
+.leaflet-container {
+  min-height: 0;
+}
