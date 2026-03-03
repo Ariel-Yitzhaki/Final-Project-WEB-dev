@@ -1,6 +1,6 @@
 // API route that fetches saved routes from Express server
 import { NextResponse } from "next/server";
-import {cookies} from "next/headers";
+import { cookies } from "next/headers";
 
 export async function GET() {
     try {

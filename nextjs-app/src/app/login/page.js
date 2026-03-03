@@ -24,7 +24,7 @@ export default function Login() {
             // Set the token cookie via Next.js API
             await axios.post(
                 "/api/set-token",
-                { token: response.data.token}
+                { token: response.data.token }
             );
             router.push("/"); // Redirect to home page on success
         } catch (err) {

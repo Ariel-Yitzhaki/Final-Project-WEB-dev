@@ -15,7 +15,7 @@ L.Icon.Default.mergeOptions({
 
 });
 
-export default function RouteMap({ routes, tripType, onGeometryLoaded, savedGeometries }) {
+export default function TripMap({ routes, tripType, onGeometryLoaded, savedGeometries }) {
     if (!routes || routes.length === 0) return null;
 
     const [geometries, setGeometries] = useState([]);
@@ -88,9 +88,9 @@ export default function RouteMap({ routes, tripType, onGeometryLoaded, savedGeom
             return w;
         })
     }));
-
+    
     return (
-        <MapContainer key={JSON.stringify(center)} center={center} zoom={10} className="h-[500px] w-full rounded" style={{ zIndex: 0 }}>
+        <MapContainer key={JSON.stringify(center)} center={center} zoom={10} className="h-full w-full rounded-2xl" style={{ zIndex: 0 }}>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution="&copy; OpenStreetMap contributors"

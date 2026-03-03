@@ -3,8 +3,8 @@
 import { useState } from "react";
 import axios from "axios";
 import Navbar from "@/components/Navbar";
-import PlanningForm from "./PlanningForm";
-import RouteResults from "./RouteResults";
+import PlanningForm from "./components/PlanningForm";
+import TripResults from "./components/TripResults";
 
 export default function PlanningPage() {
     const [location, setLocation] = useState("");
@@ -54,7 +54,11 @@ export default function PlanningPage() {
             return;
         }
         try {
-            await axios.post("/api/save-route", { location, tripType, routes: result.routes, image });
+            const routesWithGeometry = result.routes.map((route, i) => ({
+                ...route,
+                geometry: routeGeometries?.[i] || []
+            }));
+            await axios.post("/api/save-route", { location, tripType, routes: routesWithGeometry, image });
             setSaved(true);
         } catch (err) { console.error("Failed to save route:", err); }
     }
@@ -67,7 +71,7 @@ export default function PlanningPage() {
                 <PlanningForm {...{ location, setLocation, tripType, setTripType, days, setDays, loading }} onSubmit={handleSubmit} />
                 {error && <p className="text-red-500 text-center mt-4">{error}</p>}
                 {result && (
-                    <RouteResults {...{ result, resultTripType, image, weather, saved, error, routeGeometries, setRouteGeometries }} onApprove={handleApprove} />
+                    <TripResults {...{ result, resultTripType, image, weather, saved, error, routeGeometries, setRouteGeometries }} onApprove={handleApprove} />
                 )}
             </div>
         </>
