@@ -55,4 +55,17 @@ router.get("/my-routes", authenticateToken, async (req, res) => {
     }
 });
 
+// Delete a saved route by ID
+router.delete("/delete/:id", authenticateToken, async (req, res) => {
+    try {
+        const route = await Route.findOneAndDelete({ _id: req.params.id, userId: req.userId });
+        if (!route) {
+            return res.status(404).json({ message: "Route not found" });
+        }
+        res.json({ message: "Route deleted" });
+    } catch (error) {
+        console.error("Delete route error:", error.message);
+        res.status(500).json({ message: "Failed to delete route" });
+    }
+});
 module.exports = router;
