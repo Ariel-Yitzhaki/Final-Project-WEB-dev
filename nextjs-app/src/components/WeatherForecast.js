@@ -29,7 +29,7 @@ export default function WeatherForecast({ weather }) {
                             </p>
                             {/* Temp + description at bottom right */}
                             <div className="flex flex-col items-end">
-                                <p className="font-black text-black" style={{ fontSize: '22px', lineHeight: '11px' }}>{day.temp}°C</p>
+                                <p className="font-black text-black" style={{ fontSize: '22px', lineHeight: '20px' }}>{day.temp}°C</p>
                                 <p className="text-black" style={{ fontSize: '11px', lineHeight: '20px', fontWeight: 350 }}>{day.description}</p>
                             </div>
                         </div>

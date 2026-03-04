@@ -1,3 +1,4 @@
+// Middleware (Next.js 16 uses "proxy" as the file convention for middleware)
 // Middleware that checks JWT token on every page request
 // Also handles silent token refresh when token is close to expiring
 import { NextResponse } from 'next/server';

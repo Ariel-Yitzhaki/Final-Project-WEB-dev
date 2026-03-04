@@ -4,7 +4,7 @@ export default function RouteDayList({ routes, showEnd = false, tripType }) {
     return (
         <div>
             {routes.map((route, i) => (
-                <div key={i} className="mb-4 p-4 rounded">
+                <div key={i} className={`mb-4 p-4 rounded ${i < routes.length - 1 ? 'border-b border-gray-300' : ''}`}>
                     <h3 className="font-black text-black">
                         Day {route.day}: &nbsp;{route.start}{showEnd && tripType !== "trek" && route.end ? ` → ${route.end}` : ''}
                     </h3>

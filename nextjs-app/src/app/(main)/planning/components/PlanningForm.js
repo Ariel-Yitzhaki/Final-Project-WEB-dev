@@ -8,24 +8,22 @@ export default function PlanningForm({ location, setLocation, tripType, setTripT
     }, [tripType]);
 
     return (
-        <form onSubmit={onSubmit} className="max-w-md mx-auto bg-white p-6 rounded-2xl shadow">
+        <form onSubmit={onSubmit} className="p-6" style={{ backgroundColor: '#1A1A1A', paddingTop: '80px' }}>
             {/* Location input */}
-            <label className="block mb-2 text-black font-semibold">Country / City</label>
+            <label className="block mb-2 text-white font-semibold">Country / City</label>
             <input type="text" value={location} onChange={(e) => setLocation(e.target.value)}
-                className="w-full p-2 mb-4 border-2 rounded-2xl text-black" placeholder="e.g. Switzerland, Tokyo" required />
-
+                className="w-full p-2 mb-4 border-2 border-gray-600 rounded-2xl text-white bg-black" placeholder="e.g. Switzerland, Tokyo" required />
             {/* Trip type selector */}
-            <label className="block mb-2 text-black font-semibold">Trip Type</label>
+            <label className="block mb-2 text-white font-semibold">Trip Type</label>
             <select value={tripType} onChange={(e) => setTripType(e.target.value)}
-                className="w-full p-2 mb-4 border-2 rounded-2xl text-black">
+                className="w-full p-2 mb-4 border-2 border-gray-600 rounded-2xl text-white bg-black">
                 <option value="trek">Trek (Walking)</option>
                 <option value="cycling">Cycling</option>
             </select>
-
             {/* Duration input - cycling requires minimum 2 days */}
-            <label className="block mb-2 text-black font-semibold">Duration (days)</label>
+            <label className="block mb-2 text-white font-semibold">Duration (days)</label>
             <select value={days} onChange={(e) => setDays(Number(e.target.value))}
-                className="w-full p-2 mb-4 border-2 rounded-2xl text-black" required>
+                className="w-full p-2 mb-4 border-2 border-gray-600 rounded-2xl text-white bg-black" required>
                 {tripType === "cycling" ? (
                     <>
                         <option value={2}>2</option>
@@ -40,7 +38,10 @@ export default function PlanningForm({ location, setLocation, tripType, setTripT
                 )}
             </select>
             <button type="submit" disabled={loading}
-                className="w-full bg-green-500 text-white p-2 rounded-2xl hover:bg-green-600 disabled:bg-gray-400 mt-2">
+                className="w-full text-black font-semibold p-2 rounded-2xl disabled:bg-gray-400 mt-2 transition-all border-2 border-transparent"
+                style={{ backgroundColor: loading ? 'orange' : '#C6C7F8' }}
+                onMouseEnter={(e) => { if (!loading) { e.target.style.backgroundColor = '#8e8fd3'; e.target.style.borderColor = 'white'; } }}
+                onMouseLeave={(e) => { if (!loading) { e.target.style.backgroundColor = '#C6C7F8'; e.target.style.borderColor = 'transparent'; } }}>
                 {loading ? "Generating..." : "Generate Trip"}
             </button>
         </form>

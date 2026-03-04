@@ -16,3 +16,4 @@ export default function TripContentLayout({ route, weather, routes, tripType, sh
         </div>
     );
 }
+

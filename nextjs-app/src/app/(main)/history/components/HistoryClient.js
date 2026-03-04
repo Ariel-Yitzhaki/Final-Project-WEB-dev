@@ -47,7 +47,7 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
     return (
         <div className="min-h-screen bg-gray-100 p-8 pt-24">
             <div className="flex justify-center items-center mb-6 relative">
-                <h1 className="text-3xl font-bold text-center text-black">History</h1>
+                <h1 className="text-4xl font-bold text-center text-black" style={{ paddingTop: '40px', paddingBottom: '40px' }}>History</h1>
                 {/* Toggle delete mode - shows/hides delete buttons on cards */}
                 <button
                     onClick={() => setDeleteMode(!deleteMode)}
@@ -124,10 +124,10 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                             height: '475px',
                             position: 'absolute',
                             top: `${mapTop + 155}px`,
-                            left: 'calc(50% + 448px + 34px - 220px)',
+                            left: 'calc(50% + 448px + 34px - 85px)',
                             borderRadius: '18px',
                             overflow: 'hidden',
-                            border: '6px solid hsla(0, 23%, 98%, 0.82)',
+                            border: '3px solid hsla(0, 0%, 0%, 0.88)',
                             boxShadow: '0px 3px 25px rgba(0, 0, 0, 0.35)',
                             zIndex: 10,
                         }}>

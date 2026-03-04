@@ -93,7 +93,7 @@ router.post("/refresh", (req, res) => {
         const newToken = createToken(decoded.userId, decoded.username);
         setTokenCookie(res, newToken);
 
-        res.json({ message: "Token refreshed", username: decodced.username });
+        res.json({ message: "Token refreshed", username: decoded.username });
     } catch (error) {
         return res.status(401).json({ message: "Invalid token" });
     }
