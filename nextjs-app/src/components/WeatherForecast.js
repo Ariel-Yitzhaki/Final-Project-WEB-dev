@@ -1,4 +1,6 @@
 // Shared component - displays 3-day weather forecast cards
+import Image from "next/image";
+
 export default function WeatherForecast({ weather }) {
     if (!weather) return null;
     return (
@@ -9,12 +11,12 @@ export default function WeatherForecast({ weather }) {
                     <div key={i} className="flex-1 relative" style={{ height: '200px', borderRadius: '18px', overflow: 'hidden' }}>
                         {/* Background card with centered icon */}
                         <div className="absolute inset-0 bg-gray-100 flex items-center justify-center" style={{ borderRadius: '18px' }}>
-                            <img
+                            <Image
                                 src={`https://openweathermap.org/img/wn/${day.icon}@2x.png`}
                                 alt={day.description}
+                                width={173}
+                                height={173}
                                 style={{
-                                    width: '173px',
-                                    height: '173px',
                                     filter: 'brightness(1) saturate(100%) invert(65%) sepia(90%) saturate(500%) hue-rotate(360deg) brightness(100%)',
                                 }}
                             />

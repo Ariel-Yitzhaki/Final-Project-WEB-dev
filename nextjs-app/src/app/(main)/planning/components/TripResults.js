@@ -28,7 +28,7 @@ export default function TripResults({ result, resultTripType, image, weather, sa
                         Approve and Save Route
                     </button>
                 ) : (
-                    <p className="text-green-600 text-center font-semibold">Route saved!</p>
+                    <p className="w-full text-green-600 text-center font-semibold">Route saved!</p>
                 )}
             </div>
         </div>

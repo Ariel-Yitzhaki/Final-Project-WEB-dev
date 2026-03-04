@@ -7,6 +7,7 @@ export default function TripDetails({ route, weather }) {
             route={route}
             weather={weather}
             routes={route.routes}
+            tripType={route.tripType}
             showEnd
         />
     );

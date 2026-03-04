@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import axios from "axios";
-import Navbar from "@/components/Navbar";
 import PlanningForm from "./components/PlanningForm";
 import TripResults from "./components/TripResults";
 import dynamic from "next/dynamic";
@@ -67,7 +66,6 @@ export default function PlanningPage() {
 
     return (
         <>
-            <Navbar />
             <div className="min-h-screen bg-gray-100 p-8 pt-24">
                 <h1 className="text-6xl font-bold mb-6 text-center text-black mt-10">Plan a trip</h1>
                 <div className="mt-8">
