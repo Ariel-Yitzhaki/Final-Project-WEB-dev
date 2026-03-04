@@ -68,4 +68,5 @@ router.delete("/delete/:id", authenticateToken, async (req, res) => {
         res.status(500).json({ message: "Failed to delete route" });
     }
 });
+
 module.exports = router;

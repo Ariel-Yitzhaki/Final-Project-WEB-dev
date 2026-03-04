@@ -96,12 +96,14 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                                         {/* Delete button - only visible in delete mode, positioned past the arrow */}
                                         {deleteMode && (
                                             <button
-                                                onClick={(e) => { e.stopPropagation(); handleDelete(route._id); }}
+                                                onClick={(e) => { e.stopPropagation(); handleDeleteRoute(route._id); }}
                                                 className="absolute text-red-400 hover:text-red-600 transition-colors"
-                                                style={{ right: '24px' }}
+                                                style={{ right: '24px', top: '50%', transform: 'translateY(-50%)' }}
                                                 title="Delete route"
                                             >
-                                                <span style={{ fontWeight: 'bold', fontSize: '18px' }}>✕</span>
+                                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
+                                                    <path d="M1 1l12 12M13 1L1 13" />
+                                                </svg>
                                             </button>
                                         )}
                                     </div>
