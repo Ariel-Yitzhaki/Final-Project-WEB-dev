@@ -2,15 +2,21 @@
 import Link from "next/link";
 
 export const metadata = {
-    title: "Home - Trip Planner",
-    description: "Plan your next trip with AI-generated routes",
+  title: "Home - Trip Planner",
+  description: "Plan your next trip with AI-generated routes",
 };
 
 export default function Home() {
   return (
     <>
-      <div className="min-h-screen flex flex-col items-center justify-start pt-52">
-        <h1 className="text-8xl font-bold mb-8">מסלול טיולים אפקה 2026</h1>
+      <div className="min-h-screen flex flex-col items-center justify-start pt-52"
+        style={{
+          backgroundImage: "url('/website_background2.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}>
+        <h1 className="text-8xl font-bold text-black mb-8 px-8 py-4 rounded-2xl" style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>מסלול טיולים אפקה 2026</h1>
         <div className="flex gap-20 mt-20">
           <Link
             href="/planning"
