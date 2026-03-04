@@ -28,7 +28,7 @@ export default function Navbar() {
             justifyContent: "space-between",
             alignItems: "center",
             padding: "20px 30px",
-            backgroundColor: "#1e3a5f",
+            backgroundColor: "#030303",
             position: "fixed",
             top: 0,
             right: 0,

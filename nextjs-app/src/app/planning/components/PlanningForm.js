@@ -24,13 +24,24 @@ export default function PlanningForm({ location, setLocation, tripType, setTripT
 
             {/* Duration input - cycling requires minimum 2 days */}
             <label className="block mb-2 text-black font-semibold">Duration (days)</label>
-            <input type="number" value={days} onChange={(e) => setDays(Number(e.target.value))}
-                min={tripType === "cycling" ? 2 : 1} max={3}
-                className="w-full p-2 mb-4 border-2 rounded-2xl text-black" required />
-
+            <select value={days} onChange={(e) => setDays(Number(e.target.value))}
+                className="w-full p-2 mb-4 border-2 rounded-2xl text-black" required>
+                {tripType === "cycling" ? (
+                    <>
+                        <option value={2}>2</option>
+                        <option value={3}>3</option>
+                    </>
+                ) : (
+                    <>
+                        <option value={1}>1</option>
+                        <option value={2}>2</option>
+                        <option value={3}>3</option>
+                    </>
+                )}
+            </select>
             <button type="submit" disabled={loading}
-                className="w-full bg-blue-500 text-white p-2 rounded-2xl hover:bg-blue-600 disabled:bg-gray-400 mt-2">
-                {loading ? "Generating..." : "Generate Route"}
+                className="w-full bg-green-500 text-white p-2 rounded-2xl hover:bg-green-600 disabled:bg-gray-400 mt-2">
+                {loading ? "Generating..." : "Generate Trip"}
             </button>
         </form>
     );

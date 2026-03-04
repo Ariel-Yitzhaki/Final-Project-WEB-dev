@@ -69,33 +69,35 @@ export default function PlanningPage() {
         <>
             <Navbar />
             <div className="min-h-screen bg-gray-100 p-8 pt-24">
-                <h1 className="text-3xl font-bold mb-6 text-center text-black">Plan a trip</h1>
-                <PlanningForm {...{ location, setLocation, tripType, setTripType, days, setDays, loading }} onSubmit={handleSubmit} />
-                {error && <p className="text-red-500 text-center mt-4">{error}</p>}
-                {result && (
-                    <div className="relative">
-                        <TripResults {...{ result, resultTripType, image, weather, saved }} onApprove={handleApprove} />
-                        {/* Map positioned to the right of the results card */}
-                        <div style={{
-                            width: '600px',
-                            height: '475px',
-                            position: 'absolute',
-                            top: '85px',
-                            left: 'calc(50% + 448px + 34px - 230px)',
-                            borderRadius: '18px',
-                            overflow: 'hidden',
-                            border: '6px solid hsla(0, 23%, 98%, 0.82)',
-                            boxShadow: '0px 3px 25px rgba(0, 0, 0, 0.35)',
-                            zIndex: 10,
-                        }}>
-                            <TripMap
-                                routes={result.routes}
-                                tripType={resultTripType}
-                                onGeometryLoaded={setRouteGeometries}
-                            />
+                <h1 className="text-6xl font-bold mb-6 text-center text-black mt-10">Plan a trip</h1>
+                <div className="mt-8">
+                    <PlanningForm {...{ location, setLocation, tripType, setTripType, days, setDays, loading }} onSubmit={handleSubmit} />
+                    {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+                    {result && (
+                        <div className="relative">
+                            <TripResults {...{ result, resultTripType, image, weather, saved }} onApprove={handleApprove} />
+                            {/* Map positioned to the right of the results card */}
+                            <div style={{
+                                width: '600px',
+                                height: '475px',
+                                position: 'absolute',
+                                top: '85px',
+                                left: 'calc(50% + 448px + 34px - 230px)',
+                                borderRadius: '18px',
+                                overflow: 'hidden',
+                                border: '6px solid hsla(0, 23%, 98%, 0.82)',
+                                boxShadow: '0px 3px 25px rgba(0, 0, 0, 0.35)',
+                                zIndex: 10,
+                            }}>
+                                <TripMap
+                                    routes={result.routes}
+                                    tripType={resultTripType}
+                                    onGeometryLoaded={setRouteGeometries}
+                                />
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
         </>
     );

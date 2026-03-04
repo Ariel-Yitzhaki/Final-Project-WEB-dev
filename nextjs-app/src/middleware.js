@@ -42,7 +42,7 @@ async function refreshToken(oldToken) {
 }
 
 
-export async function proxy(request) {
+export async function middleware(request) {
     const token = request.cookies.get("token")?.value;
 
     // Pages that don't require authentication
