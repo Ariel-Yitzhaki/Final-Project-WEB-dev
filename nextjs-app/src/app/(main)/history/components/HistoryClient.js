@@ -51,7 +51,7 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                 {/* Toggle delete mode - shows/hides delete buttons on cards */}
                 <button
                     onClick={() => setDeleteMode(!deleteMode)}
-                    className={`absolute right-0 p-2 rounded-lg transition-colors ${deleteMode ? "bg-gray-700 text-gray-200" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
+                    className={`absolute right-0 p-2 rounded-lg transition-colors ${deleteMode ? "bg-gray-700 text-gray-200" : "bg-gray-200 text-gray-700 hover:bg-gray-400"}`}
                     title={deleteMode ? "Done deleting" : "Delete trips"}
                 >
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -93,20 +93,20 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                                                 isSelected={selectedRoute?._id === route._id}
                                             />
                                         </div>
-                                        {/* Delete button - only visible in delete mode, positioned past the arrow */}
-                                        {deleteMode && (
-                                            <button
-                                                onClick={(e) => { e.stopPropagation(); handleDeleteRoute(route._id); }}
-                                                className="absolute text-red-400 hover:text-red-600 transition-colors"
-                                                style={{ right: '24px', top: '50%', transform: 'translateY(-50%)' }}
-                                                title="Delete route"
-                                            >
-                                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
-                                                    <path d="M1 1l12 12M13 1L1 13" />
-                                                </svg>
-                                            </button>
-                                        )}
                                     </div>
+                                    {/* Delete button - only visible in delete mode, fixed to top-right of card */}
+                                    {deleteMode && (
+                                        <button
+                                            onClick={(e) => { e.stopPropagation(); handleDeleteRoute(route._id); }}
+                                            className="absolute text-red-400 hover:text-red-600 transition-colors rounded-full hover:bg-red-100 p-2"
+                                            style={{ right: '24px', top: '52px' }}
+                                            title="Delete route"
+                                        >
+                                            <svg width="15" height="15" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                                                <path d="M1 1l12 12M13 1L1 13" />
+                                            </svg>
+                                        </button>
+                                    )}
                                     {selectedRoute?._id === route._id && (
                                         <>
                                             <hr className="border-black" style={{ margin: '0 -68px', width: 'calc(100% + 136px)' }} />
