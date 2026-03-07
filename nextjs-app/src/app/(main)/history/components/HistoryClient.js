@@ -54,7 +54,7 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
     return (
         <div className="min-h-screen bg-gray-100" style={{ padding: '0.31vw 0.31vw', paddingTop: '0.94vw' }}>
             <div className="flex justify-center items-center relative" style={{ marginBottom: '0.23vw' }}>
-                <h1 className="font-bold text-center text-black" style={{ fontSize: '1.56vw', paddingTop: '1.56vw', paddingBottom: '1.56vw' }}>
+                <h1 className="font-bold text-center text-black" style={{ fontSize: '1.56vw', paddingTop: '3.56vw', paddingBottom: '1.56vw' }}>
                     History
                 </h1>
                 {/* Toggle delete mode - shows/hides delete buttons on cards */}
@@ -71,6 +71,7 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                     </svg>
                 </button>
             </div>
+            <div style={{ width: '45%', margin: '0 auto', height: '0.04vw', background: 'linear-gradient(to right, transparent, black, transparent)', marginBottom: '1.94vw' }} />
             {serverError && <p className="text-red-500 text-center">{serverError}</p>}
             {!serverError && routes.length === 0 && (
                 <p className="text-center text-gray-600">No saved routes yet. Plan a trip first!</p>

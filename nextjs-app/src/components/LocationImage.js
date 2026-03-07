@@ -10,11 +10,11 @@ export default function LocationImage({ image }) {
                 alt={image.alt}
                 width={800}
                 height={400}
-                className="w-full object-cover border-2 border-gray-400 rounded-2xl"
-                style={{ height: '400px', maxWidth: '100%' }}
+                className="w-full object-cover"
+                style={{ height: '15.63vw', maxWidth: '100%', border: '0.08vw solid #9ca3af', borderRadius: '0.63vw' }}
             />
             {/* Unsplash requires photographer credit */}
-            <p className="text-gray-500 text-xs mt-1">Photo by {image.credit} on Unsplash</p>
+            <p className="text-gray-500" style={{ fontSize: '0.47vw', marginTop: '0.16vw' }}>Photo by {image.credit} on Unsplash</p>
         </div>
     );
 }

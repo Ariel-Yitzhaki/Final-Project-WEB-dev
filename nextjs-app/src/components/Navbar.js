@@ -8,7 +8,7 @@ export default function Navbar() {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            padding: "20px 30px",
+            padding: "0.98vw 1.17vw",
             backgroundColor: "#030303",
             position: "fixed",
             top: 0,

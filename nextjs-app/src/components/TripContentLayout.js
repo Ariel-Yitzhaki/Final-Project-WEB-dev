@@ -6,7 +6,7 @@ import RouteDayList from "@/components/RouteDayList";
 
 export default function TripContentLayout({ route, weather, routes, tripType, showEnd }) {
     return (
-        <div className="flex flex-col w-full" style={{ gap: '34px' }}>
+        <div className="flex flex-col w-full" style={{ gap: '1.33vw' }}>
             {/* Location image from Unsplash */}
             <LocationImage image={route.image || route} />
             {/* 3-day weather forecast for starting point */}
@@ -16,4 +16,3 @@ export default function TripContentLayout({ route, weather, routes, tripType, sh
         </div>
     );
 }
-

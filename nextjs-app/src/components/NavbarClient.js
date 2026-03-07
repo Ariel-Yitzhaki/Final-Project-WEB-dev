@@ -23,15 +23,16 @@ export default function NavbarClient() {
 
     return (
         <>
-            <div className="flex gap-4">
-                <Link href="/" className={`px-3 py-1 rounded transition-colors ${pathname === "/" ? "bg-white text-black" : "text-white hover:bg-white hover:text-black"}`}>Home</Link>
-                <Link href="/planning" className={`px-3 py-1 rounded transition-colors ${pathname === "/planning" ? "bg-white text-black" : "text-white hover:bg-white hover:text-black"}`}>Trip Planner</Link>
-                <Link href="/history" className={`px-3 py-1 rounded transition-colors ${pathname === "/history" ? "bg-white text-black" : "text-white hover:bg-white hover:text-black"}`}>History</Link>
+            <div className="flex" style={{ gap: '0.63vw' }}>
+                <Link href="/" className={`transition-colors ${pathname === "/" ? "bg-white text-black" : "text-white hover:bg-white hover:text-black"}`} style={{ padding: '0.16vw 0.47vw', borderRadius: '0.16vw', fontSize: '0.63vw' }}>Home</Link>
+                <Link href="/planning" className={`transition-colors ${pathname === "/planning" ? "bg-white text-black" : "text-white hover:bg-white hover:text-black"}`} style={{ padding: '0.16vw 0.47vw', borderRadius: '0.16vw', fontSize: '0.63vw' }}>Trip Planner</Link>
+                <Link href="/history" className={`transition-colors ${pathname === "/history" ? "bg-white text-black" : "text-white hover:bg-white hover:text-black"}`} style={{ padding: '0.16vw 0.47vw', borderRadius: '0.16vw', fontSize: '0.63vw' }}>History</Link>
             </div>
 
             <button
                 onClick={handleLogout}
-                className="bg-black text-white px-4 py-2 rounded border border-black hover:bg-white hover:text-black cursor-pointer"
+                className="bg-black text-white hover:bg-white hover:text-black cursor-pointer"
+                style={{ padding: '0.31vw 0.63vw', borderRadius: '0.16vw', border: '0.04vw solid black', fontSize: '0.63vw' }}
             >
                 Logout
             </button>
