@@ -15,7 +15,7 @@ export default function TripResults({ result, resultTripType, image, weather, sa
             }}
         >
             <div className="flex flex-col items-start w-full" style={{ gap: '1.33vw' }}>
-                <h2 className="font-bols text-black leading-none tracking-normal" style={{ fontSize: '0.94vw' }}>Generated Trip - {result.country}</h2>
+                <h2 className="font-black text-black leading-none tracking-normal" style={{ fontSize: '0.94vw' }}>Generated Trip - {result.country}</h2>
                 {/* Location image from Unsplash, 3-day weather forecast, and day-by-day route breakdown */}
                 <TripContentLayout
                     route={{ image }}

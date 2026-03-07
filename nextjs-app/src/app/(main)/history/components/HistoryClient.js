@@ -14,6 +14,7 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
     const [weather, setWeather] = useState(null);
     const cardRefs = useRef([]);
     const [mapTop, setMapTop] = useState(0);
+    const [confirmDelete, setConfirmDelete] = useState(null);
 
     async function handleSelectRoute(route, index) {
         setSelectedRoute(route);
@@ -60,8 +61,8 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                 {/* Toggle delete mode - shows/hides delete buttons on cards */}
                 <button
                     onClick={() => setDeleteMode(!deleteMode)}
-                    className={`absolute transition-colors ${deleteMode ? "bg-gray-700 text-gray-200" : "bg-gray-200 text-gray-700 hover:bg-gray-400"}`}
-                    style={{ right: 0, padding: '0.31vw', borderRadius: '0.31vw' }}
+                    className={`absolute transition-colors ${deleteMode ? "bg-gray-700 text-gray-200" : "bg-gray-200 text-gray-700 hover:bg-red-400"}`}
+                    style={{ right: '20vw', top: '4.5vw', padding: '0.31vw', borderRadius: '0.4vw' }}
                     title={deleteMode ? "Done deleting" : "Delete trips"}
                 >
                     <svg style={{ width: '0.78vw', height: '0.78vw' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -106,21 +107,44 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                                     </div>
                                     {/* Delete button - only visible in delete mode, fixed to top-right of card */}
                                     {deleteMode && (
-                                        <button
-                                            onClick={(e) => { e.stopPropagation(); handleDeleteRoute(route._id); }}
-                                            className="absolute text-red-400 hover:text-red-600 transition-colors rounded-full hover:bg-red-100"
-                                            style={{ right: '0.94vw', top: '2.03vw', padding: '0.31vw' }}
-                                            title="Delete route"
-                                        >
-                                            <svg style={{ width: '0.59vw', height: '0.59vw' }} viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                                                <path d="M1 1l12 12M13 1L1 13" />
-                                            </svg>
-                                        </button>
-                                    )}
-                                    {selectedRoute?._id === route._id && (
                                         <>
-                                            <hr className="border-black" style={{ margin: '0 -2.66vw', width: 'calc(100% + 5.31vw)' }} />
-                                            <TripDetails route={selectedRoute} weather={weather} />
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); setConfirmDelete(route._id); }}
+                                                className="absolute text-red-400 hover:text-red-600 transition-colors rounded-full hover:bg-red-100"
+                                                style={{ right: '0.94vw', top: '2.03vw', padding: '0.31vw' }}
+                                                title="Delete route"
+                                            >
+                                                <svg style={{ width: '0.59vw', height: '0.59vw' }} viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                                                    <path d="M1 1l12 12M13 1L1 13" />
+                                                </svg>
+                                            </button>
+                                            {confirmDelete === route._id && (
+                                                <div
+                                                    className="absolute inset-0 flex items-center justify-center"
+                                                    style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: '0.94vw', zIndex: 20 }}
+                                                    onClick={(e) => e.stopPropagation()}
+                                                >
+                                                    <div className="text-center">
+                                                        <p className="text-black font-semibold" style={{ marginBottom: '0.78vw', fontSize: '0.7vw' }}>Delete this trip?</p>
+                                                        <div className="flex justify-center" style={{ gap: '0.59vw' }}>
+                                                            <button
+                                                                onClick={() => { handleDeleteRoute(route._id); setConfirmDelete(null); }}
+                                                                className="bg-red-500 text-white hover:bg-red-600"
+                                                                style={{ padding: '0.39vw 0.78vw', borderRadius: '0.39vw', fontSize: '0.55vw' }}
+                                                            >
+                                                                Delete
+                                                            </button>
+                                                            <button
+                                                                onClick={() => setConfirmDelete(null)}
+                                                                className="bg-gray-200 text-black hover:bg-gray-300"
+                                                                style={{ padding: '0.39vw 0.78vw', borderRadius: '0.39vw', fontSize: '0.55vw' }}
+                                                            >
+                                                                Cancel
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </>
                                     )}
                                 </div>

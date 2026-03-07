@@ -3,18 +3,15 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Link from "next/link";
-
 export default function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const router = useRouter();
-
   async function handleSubmit(e) {
     e.preventDefault(); // Prevents page refresh on form submit
     setError(""); // Clears any previous errors
-
     try {
       await axios.post(`${process.env.NEXT_PUBLIC_EXPRESS_URL}/api/auth/register`,
         { username, password });
@@ -24,19 +21,19 @@ export default function Register() {
       setError(err.response?.data?.message || "Registration failed");
     }
   }
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow-md w-80">
-        <h1 className="text-2xl font-bold mb-4 text-center text-black">Register</h1>
-        {error && <p className="text-red-500 text-sm mb-3 text-black">{error}</p>}
-        {success && <p className="text-green-500 text-sm mb-3 text-black">{success}</p>}
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#000000' }}>
+      <form onSubmit={handleSubmit} style={{ padding: '1.56vw', borderRadius: '0.39vw', width: '15.63vw', backgroundColor: '#1A1A1A', boxShadow: '0px 0.23vw 1.17vw rgba(0, 0, 0, 0.3)' }}>
+        <h1 className="font-bold text-center text-white" style={{ fontSize: '1.17vw', marginBottom: '1.56vw' }}>Register</h1>
+        {error && <p className="text-red-500" style={{ fontSize: '0.67vw', marginBottom: '0.59vw' }}>{error}</p>}
+        {success && <p className="text-green-500" style={{ fontSize: '0.67vw', marginBottom: '0.59vw' }}>{success}</p>}
         <input
           type="text"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="w-full p-2 mb-3 border rounded text-black"
+          className="w-full border-2 border-gray-600 text-white bg-black"
+          style={{ padding: '0.39vw', marginBottom: '0.59vw', borderRadius: '0.20vw', fontSize: '0.78vw' }}
           required
         />
         <input
@@ -44,17 +41,21 @@ export default function Register() {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-2 mb-4 border rounded text-black"
+          className="w-full border-2 border-gray-600 text-white bg-black"
+          style={{ padding: '0.39vw', marginBottom: '0.78vw', borderRadius: '0.20vw', fontSize: '0.78vw' }}
           required
         />
         <button
           type="submit"
-          className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
+          className="w-full text-black font-semibold border-2 border-transparent transition-all"
+          style={{ padding: '0.39vw', borderRadius: '0.20vw', fontSize: '0.78vw', backgroundColor: '#C6C7F8' }}
+          onMouseEnter={(e) => { e.target.style.backgroundColor = '#8e8fd3'; e.target.style.borderColor = 'white'; }}
+          onMouseLeave={(e) => { e.target.style.backgroundColor = '#C6C7F8'; e.target.style.borderColor = 'transparent'; }}
         >
           Register
         </button>
-        <p className="text-sm text-center mt-3 text-black">
-          Have an account? <Link href="/login" className="text-blue-500">Login</Link>
+        <p className="text-center text-white" style={{ fontSize: '0.67vw', marginTop: '0.59vw' }}>
+          Have an account? <Link href="/login" className="hover:underline" style={{ color: '#A8A9FF' }}>Login</Link>
         </p>
       </form>
     </div>
