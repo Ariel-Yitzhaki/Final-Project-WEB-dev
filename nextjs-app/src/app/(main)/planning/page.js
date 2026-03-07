@@ -93,48 +93,48 @@ export default function PlanningPage() {
                 right: '0.04%',
                 bottom: '0.09%',
                 display: 'flex',
-                paddingTop: '80px',
+                paddingTop: '2.13vw',
             }}>
                 {/* Left panel - Planning Form */}
                 <div style={{
                     position: 'relative',
                     width: '19.57%',
                     minHeight: '100vh',
-                    marginLeft: '20px',
+                    marginLeft: '0.78vw',
                     backgroundColor: '#1A1A1A',
                     overflow: 'hidden',
                 }}>
-                    <h1 className={`${dancingScript.className} text-5xl text-center text-white py-2`} style={{ letterSpacing: '8px', marginTop: '80px' }}>Plan your trip</h1>
+                    <h1 className={`${dancingScript.className} text-center text-white`} style={{ fontSize: '1.88vw', letterSpacing: '0.31vw', marginTop: '3.13vw', padding: '0.31vw 0' }}>Plan your trip</h1>
                     <PlanningForm {...{ location, setLocation, tripType, setTripType, days, setDays, loading }} onSubmit={handleSubmit} />
                 </div>
 
                 {/* Right panel - Results area */}
                 <div style={{
                     flex: 1,
-                    minHeight: 'calc(100vh - 80px)',
+                    minHeight: 'calc(100vh - 3.13vw)',
                     position: 'relative',
                     backgroundColor: 'transparent',
                 }}>
                     {!hasGenerated && (
-                        <div className="flex items-center justify-center h-full" style={{ paddingBottom: '400px' }}>
-                            <p className="font-bold text-orange-500 text-6xl">Let's get started, generate a trip!</p>
+                        <div className="flex items-center justify-center h-full" style={{ paddingBottom: '15.63vw' }}>
+                            <p className="font-bold text-orange-500" style={{ fontSize: '2.34vw' }}>Let's get started, generate a trip!</p>
                         </div>
                     )}
-                    {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+                    {error && <p className="text-red-500 text-center" style={{ marginTop: '0.63vw' }}>{error}</p>}
                     {result && (
-                        <div className="p-8 flex gap-6 items-start w-full">
-                            <div className="min-w-0" style={{ width: '1100px' }}>
+                        <div className="flex items-start w-full" style={{ padding: '1.25vw', gap: '0.40vw' }}>
+                            <div className="min-w-0" style={{ width: '42.97vw' }}>
                                 <TripResults {...{ result, resultTripType, image, weather, saved }} onApprove={handleApprove} />
                             </div>
                             <div style={{
-                                width: '800px',
-                                minWidth: '600px',
-                                height: '800px',
-                                marginTop: '2rem',
-                                borderRadius: '32px',
+                                width: '31.25vw',
+                                minWidth: '23.44vw',
+                                height: '31.25vw',
+                                marginTop: '0.60vw',
+                                borderRadius: '1.25vw',
                                 overflow: 'hidden',
-                                border: '3px solid hsl(0, 20%, 98%)',
-                                boxShadow: '0px 3px 25px rgba(0, 0, 0, 0.35)',
+                                border: '0.12vw solid hsl(0, 20%, 98%)',
+                                boxShadow: '0px 0.12vw 0.98vw rgba(0, 0, 0, 0.35)',
                                 zIndex: 10,
                             }}>
                                 <TripMap

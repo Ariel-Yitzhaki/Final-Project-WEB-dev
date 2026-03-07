@@ -44,17 +44,27 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
         }
     }
 
+    // Convert the map's top position to vw so it scales across screen sizes
+    function getMapTopVw() {
+        const vwMapTop = (mapTop / window.innerWidth) * 100;
+        const vwOffset = (160 / 2560) * 100;
+        return vwMapTop + vwOffset;
+    }
+
     return (
-        <div className="min-h-screen bg-gray-100 p-8 pt-24">
-            <div className="flex justify-center items-center mb-6 relative">
-                <h1 className="text-4xl font-bold text-center text-black" style={{ paddingTop: '40px', paddingBottom: '40px' }}>History</h1>
+        <div className="min-h-screen bg-gray-100" style={{ padding: '0.31vw 0.31vw', paddingTop: '0.94vw' }}>
+            <div className="flex justify-center items-center relative" style={{ marginBottom: '0.23vw' }}>
+                <h1 className="font-bold text-center text-black" style={{ fontSize: '1.56vw', paddingTop: '1.56vw', paddingBottom: '1.56vw' }}>
+                    History
+                </h1>
                 {/* Toggle delete mode - shows/hides delete buttons on cards */}
                 <button
                     onClick={() => setDeleteMode(!deleteMode)}
-                    className={`absolute right-0 p-2 rounded-lg transition-colors ${deleteMode ? "bg-gray-700 text-gray-200" : "bg-gray-200 text-gray-700 hover:bg-gray-400"}`}
+                    className={`absolute transition-colors ${deleteMode ? "bg-gray-700 text-gray-200" : "bg-gray-200 text-gray-700 hover:bg-gray-400"}`}
+                    style={{ right: 0, padding: '0.31vw', borderRadius: '0.31vw' }}
                     title={deleteMode ? "Done deleting" : "Delete trips"}
                 >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg style={{ width: '0.78vw', height: '0.78vw' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M3 6h18" />
                         <path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2" />
                         <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" />
@@ -66,25 +76,24 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                 <p className="text-center text-gray-600">No saved routes yet. Plan a trip first!</p>
             )}
             {routes.length > 0 && (
-                <div className="flex justify-center" style={{ gap: '34px', position: 'relative' }}>
-                    {/* Left - card list */}
-                    <div className="max-w-4xl w-full space-y-4">
+                <div className="flex justify-center" style={{ gap: '1.33vw', position: 'relative' }}>
+                    <div className="w-full" style={{ maxWidth: '35.16vw', display: 'flex', flexDirection: 'column', gap: '0.63vw' }}>
                         {routes.map((route, i) => (
                             <div
                                 key={i}
                                 ref={el => cardRefs.current[i] = el}
                                 className="bg-white flex flex-col items-start self-stretch"
                                 style={{
-                                    boxShadow: '0px 6px 30px rgba(0, 0, 0, 0.08)',
-                                    borderRadius: '24px',
+                                    boxShadow: '0px 0.23vw 1.17vw rgba(0, 0, 0, 0.08)',
+                                    borderRadius: '0.94vw',
                                     overflow: 'visible',
                                     position: 'relative',
                                 }}
                             >
-                                <div className="flex flex-col items-start self-stretch w-full" style={{ gap: '34px', padding: '40px 68px' }}>
+                                <div className="flex flex-col items-start self-stretch w-full" style={{ gap: '1.33vw', padding: '1.56vw 2.66vw' }}>
                                     <div
                                         className="w-full group cursor-pointer flex items-center"
-                                        style={{ margin: '-40px -68px', padding: '40px 68px', width: 'calc(100% + 136px)' }}
+                                        style={{ margin: '-1.56vw -2.66vw', padding: '1.56vw 2.66vw', width: 'calc(100% + 5.31vw)' }}
                                         onClick={() => selectedRoute?._id === route._id ? setSelectedRoute(null) : handleSelectRoute(route, i)}
                                     >
                                         <div className="flex-1">
@@ -98,18 +107,18 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                                     {deleteMode && (
                                         <button
                                             onClick={(e) => { e.stopPropagation(); handleDeleteRoute(route._id); }}
-                                            className="absolute text-red-400 hover:text-red-600 transition-colors rounded-full hover:bg-red-100 p-2"
-                                            style={{ right: '24px', top: '52px' }}
+                                            className="absolute text-red-400 hover:text-red-600 transition-colors rounded-full hover:bg-red-100"
+                                            style={{ right: '0.94vw', top: '2.03vw', padding: '0.31vw' }}
                                             title="Delete route"
                                         >
-                                            <svg width="15" height="15" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                                            <svg style={{ width: '0.59vw', height: '0.59vw' }} viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                                                 <path d="M1 1l12 12M13 1L1 13" />
                                             </svg>
                                         </button>
                                     )}
                                     {selectedRoute?._id === route._id && (
                                         <>
-                                            <hr className="border-black" style={{ margin: '0 -68px', width: 'calc(100% + 136px)' }} />
+                                            <hr className="border-black" style={{ margin: '0 -2.66vw', width: 'calc(100% + 5.31vw)' }} />
                                             <TripDetails route={selectedRoute} weather={weather} />
                                         </>
                                     )}
@@ -120,15 +129,15 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                     {/* Right - map, positioned absolutely so it doesn't push cards */}
                     {selectedRoute && (
                         <div style={{
-                            width: '600px',
-                            height: '475px',
+                            width: '25.44vw',
+                            height: '22.55vw',
                             position: 'absolute',
-                            top: `${mapTop + 155}px`,
-                            left: 'calc(50% + 448px + 34px - 85px)',
-                            borderRadius: '18px',
+                            top: `${getMapTopVw()}vw`,
+                            left: 'calc(50% + 18.5vw + 1.33vw - 3.32vw)',
+                            borderRadius: '0.70vw',
                             overflow: 'hidden',
-                            border: '3px solid hsla(0, 0%, 0%, 0.88)',
-                            boxShadow: '0px 3px 25px rgba(0, 0, 0, 0.35)',
+                            border: '0.12vw solid hsla(0, 0%, 0%, 0.88)',
+                            boxShadow: '0px 0.12vw 0.98vw rgba(0, 0, 0, 0.35)',
                             zIndex: 10,
                         }}>
                             <TripMap
