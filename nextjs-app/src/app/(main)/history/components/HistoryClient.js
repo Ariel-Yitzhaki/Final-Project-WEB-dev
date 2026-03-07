@@ -61,7 +61,7 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                 {/* Toggle delete mode - shows/hides delete buttons on cards */}
                 <button
                     onClick={() => setDeleteMode(!deleteMode)}
-                    className={`absolute transition-colors ${deleteMode ? "bg-gray-700 text-gray-200" : "bg-gray-200 text-gray-700 hover:bg-red-400"}`}
+                    className={`absolute transition-colors cursor-pointer ${deleteMode ? "bg-red-600 text-black hover:bg-red-500 hover:text-white" : "bg-gray-300 text-black hover:bg-red-500 hover:text-black"}`}
                     style={{ right: '20vw', top: '4.5vw', padding: '0.31vw', borderRadius: '0.4vw' }}
                     title={deleteMode ? "Done deleting" : "Delete trips"}
                 >
@@ -110,7 +110,7 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                                         <>
                                             <button
                                                 onClick={(e) => { e.stopPropagation(); setConfirmDelete(route._id); }}
-                                                className="absolute text-red-400 hover:text-red-600 transition-colors rounded-full hover:bg-red-100"
+                                                className="absolute text-red-400 hover:text-red-600 transition-colors rounded-full hover:bg-red-100 cursor-pointer"
                                                 style={{ right: '0.94vw', top: '2.03vw', padding: '0.31vw' }}
                                                 title="Delete route"
                                             >
@@ -129,14 +129,14 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                                                         <div className="flex justify-center" style={{ gap: '0.59vw' }}>
                                                             <button
                                                                 onClick={() => { handleDeleteRoute(route._id); setConfirmDelete(null); }}
-                                                                className="bg-red-500 text-white hover:bg-red-600"
+                                                                className="bg-red-500 text-white hover:bg-red-600 cursor-pointer"
                                                                 style={{ padding: '0.39vw 0.78vw', borderRadius: '0.39vw', fontSize: '0.55vw' }}
                                                             >
                                                                 Delete
                                                             </button>
                                                             <button
                                                                 onClick={() => setConfirmDelete(null)}
-                                                                className="bg-gray-200 text-black hover:bg-gray-300"
+                                                                className="bg-gray-200 text-black hover:bg-gray-300 cursor-pointer"
                                                                 style={{ padding: '0.39vw 0.78vw', borderRadius: '0.39vw', fontSize: '0.55vw' }}
                                                             >
                                                                 Cancel

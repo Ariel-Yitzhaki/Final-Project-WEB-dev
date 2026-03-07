@@ -40,7 +40,7 @@ export default function PlanningForm({ location, setLocation, tripType, setTripT
                 )}
             </select>
             <button type="submit" disabled={loading}
-                className="w-full text-black font-bold border-2 border-transparent transition-all"
+                className="w-full text-black font-semibold border-2 border-transparent transition-all cursor-pointer"
                 style={{ padding: '0.31vw', borderRadius: '0.63vw', marginTop: '0.31vw', fontSize: '0.63vw', backgroundColor: loading ? 'orange' : '#C6C7F8' }}
                 onMouseEnter={(e) => { if (!loading) { e.target.style.backgroundColor = '#8e8fd3'; e.target.style.borderColor = 'white'; } }}
                 onMouseLeave={(e) => { if (!loading) { e.target.style.backgroundColor = '#C6C7F8'; e.target.style.borderColor = 'transparent'; } }}>

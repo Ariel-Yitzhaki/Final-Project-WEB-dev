@@ -26,7 +26,7 @@ export default function TripResults({ result, resultTripType, image, weather, sa
                 {/* Save route to history */}
                 {!saved ? (
                     <button onClick={onApprove}
-                        className="w-full text-black font-bold transition-all border-2 border-transparent"
+                        className="w-full text-black font-bold transition-all border-2 border-transparent cursor-pointer"
                         style={{ padding: '0.47vw', borderRadius: '0.63vw', fontSize: '0.63vw', backgroundColor: '#C6C7F8' }}
                         onMouseEnter={(e) => { e.target.style.backgroundColor = '#8e8fd3'; e.target.style.borderColor = 'white'; }}
                         onMouseLeave={(e) => { e.target.style.backgroundColor = '#C6C7F8'; e.target.style.borderColor = 'transparent'; }}>
