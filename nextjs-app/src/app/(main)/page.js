@@ -21,22 +21,6 @@ export default function Home() {
           <div style={{ position: 'relative', right: '35vw', marginTop: '-1vw' }}>אפקה</div>
           <div style={{ position: 'relative', right: '43vw', marginTop: '1.3vw', color: 'white', fontSize: '6vw' }}>2026</div>
         </h1>
-        <div className="flex justify-center w-full" style={{ gap: '13vw', marginTop: '8vw' }}>
-          <Link
-            href="/planning"
-            className="text-white font-bold border-4 border-black hover:border-white"
-            style={{ backgroundColor: 'black', fontSize: '0.94vw', padding: '1.56vw 3.13vw', borderRadius: '0.63vw' }}
-          >
-            Plan a Trip
-          </Link>
-          <Link
-            href="/history"
-            className="text-black font-bold border-4 border-white hover:border-black"
-            style={{ backgroundColor: '#ffffff', fontSize: '0.94vw', padding: '1.56vw 3.13vw', borderRadius: '0.63vw' }}
-          >
-            Trip History
-          </Link>
-        </div>
       </div>
     </>
   );
