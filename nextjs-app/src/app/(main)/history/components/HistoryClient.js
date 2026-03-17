@@ -105,6 +105,23 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                                             />
                                         </div>
                                     </div>
+                                    {selectedRoute?._id === route._id && (
+                                        <>
+                                            <TripDetails route={route} weather={weather} />
+                                            <button
+                                                onClick={async () => {
+                                                    const { exportTripPDF } = await import("@/utils/exportTripPDF");
+                                                    await exportTripPDF({ ...route, weather })
+                                                }}
+                                                className="w-full text-black font-semibold border-2 border-transparent transition-all cursor-pointer"
+                                                style={{ padding: '0.47vw', borderRadius: '0.63vw', fontSize: '0.63vw', backgroundColor: '#C6C7F8', marginTop: '0.63vw' }}
+                                                onMouseEnter={(e) => { e.target.style.backgroundColor = '#8e8fd3'; e.target.style.borderColor = 'white'; }}
+                                                onMouseLeave={(e) => { e.target.style.backgroundColor = '#C6C7F8'; e.target.style.borderColor = 'transparent'; }}
+                                            >
+                                                Download as PDF
+                                            </button>
+                                        </>
+                                    )}
                                     {/* Delete button - only visible in delete mode, fixed to top-right of card */}
                                     {deleteMode && (
                                         <>
