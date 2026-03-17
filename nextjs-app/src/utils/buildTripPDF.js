@@ -1,6 +1,7 @@
 // Builds the trip PDF document using jsPDF
 // Receives all data as arguments - no fetching
 import { jsPDF } from "jspdf"
+import { montRegularBase64 } from "./mont-regular-base64";
 
 export function buildTripPDF(route, mapImages, locationImage) {
     const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
@@ -10,9 +11,16 @@ export function buildTripPDF(route, mapImages, locationImage) {
     const contentWidth = pageWidth - margin * 2;
     let y = margin;
 
-    // Colors
-    const headerColor = [30, 30, 30];
-    const subColor = [80, 80, 80];
+    // Register Mont font for PDF (variable font handles weight internally)
+    pdf.addFileToVFS("Mont-Regular.ttf", montRegularBase64);
+    pdf.addFont("Mont-Regular.ttf", "Mont", "normal");
+    pdf.addFont("Mont-Regular.ttf", "Mont", "bold");
+
+    // Colors matching the website's Tailwind classes
+    const black = [0, 0, 0];             // text-black
+    const gray600 = [75, 85, 99];        // text-gray-600
+    const gray400 = [156, 163, 175];     // text-gray-400
+    const gray300 = [209, 213, 219];     // text-gray-300
     const accentColor = [198, 199, 248]; // #C6C7F8
 
     // Helper function to check if we need a new page
@@ -37,31 +45,38 @@ export function buildTripPDF(route, mapImages, locationImage) {
     pdf.setFillColor(...accentColor);
     pdf.rect(0, 0, pageWidth, 35, "F");
 
-    pdf.setFont("helvetica", "bold");
+    // Location name - font-black text-black
+    pdf.setFont("Mont", "bold");
     pdf.setFontSize(22);
-    pdf.setTextColor(...headerColor);
+    pdf.setTextColor(...black);
     pdf.text(route.location, margin, 18);
 
+    // Trip type and days - text-gray-600
+    pdf.setFont("Mont", "normal");
     pdf.setFontSize(11);
-    pdf.setTextColor(...subColor);
+    pdf.setTextColor(...gray600);
     const tripLabel = `${route.tripType === "cycling" ? "Cycling" : "Trek"} - ${route.routes.length} day(s)`;
     pdf.text(tripLabel, margin, 26);
 
-    const savedDate = `Saved on ${new Date(route.createdAt).toLocaleDateString()}`;
+    // Saved date - text-gray-400
     pdf.setFontSize(9);
-    pdf.text(savedDate, margin, 31);
+    pdf.setTextColor(...gray400);
+    pdf.text(`Saved on ${new Date(route.createdAt).toLocaleDateString()}`, margin, 31);
 
     y = 42;
 
     // Location image
     if (locationImage) {
         checkPage(75);
+        // Maintain aspect ratio from the website's LocationImage component
         const imgH = (contentWidth * 400) / 800;
         if (addImage(locationImage, margin, y, contentWidth, imgH)) {
             y += imgH + 2;
+            // Unsplash credit - text-gray-400
             if (route.image?.credit) {
+                pdf.setFont("Mont", "normal");
                 pdf.setFontSize(7);
-                pdf.setTextColor(150, 150, 150);
+                pdf.setTextColor(...gray400);
                 pdf.text(`Photo by ${route.image.credit} on Unsplash`, margin, y);
                 y += 5;
             }
@@ -72,52 +87,61 @@ export function buildTripPDF(route, mapImages, locationImage) {
     if (route.weather && route.weather.length > 0) {
         checkPage(30);
         y += 3;
-        pdf.setFont("helvetica", "bold");
+
+        // Section header - font-black text-black
+        pdf.setFont("Mont", "bold");
         pdf.setFontSize(13);
-        pdf.setTextColor(...headerColor);
-        pdf.text("Weather Forecast", margin, y);
+        pdf.setTextColor(...black);
+        pdf.text("Forecast For The Next Three Days", margin, y);
         y += 7;
 
+        // Weather cards
         const cardW = (contentWidth - 6) / 3;
         route.weather.forEach((day, i) => {
             const cardX = margin + i * (cardW + 3);
-            pdf.setFillColor(245, 245, 245);
+            // Card background matching bg-gray-100
+            pdf.setFillColor(243, 244, 246);
             pdf.roundedRect(cardX, y, cardW, 18, 2, 2, "F");
 
-            pdf.setFont("helvetica", "normal");
+            // Date - font-bold text-black, matching WeatherForecast date format
+            pdf.setFont("Mont", "bold");
             pdf.setFontSize(8);
-            pdf.setTextColor(...subColor);
-            pdf.text(day.date, cardX + 3, y + 6);
+            pdf.setTextColor(...black);
+            pdf.text(new Date(day.date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' }), cardX + 3, y + 6);
 
-            pdf.setFont("helvetica", "bold");
+            // Temperature - font-black text-black
+            pdf.setFont("Mont", "bold");
             pdf.setFontSize(12);
-            pdf.setTextColor(...headerColor);
-            pdf.text(`${day.temp}°C`, cardX + 3, y + 13);
+            pdf.setTextColor(...black);
+            pdf.text(`${day.temp}\u00B0C`, cardX + 3, y + 13);
 
-            pdf.setFont("helvetica", "normal");
+            // Description - normal weight text-black
+            pdf.setFont("Mont", "normal");
             pdf.setFontSize(7);
-            pdf.setTextColor(...subColor);
+            pdf.setTextColor(...black);
             pdf.text(day.description, cardX + cardW - 3, y + 6, { align: "right" });
         });
         y += 22;
+        // Retrieval timestamp
+        pdf.setFont("Mont", "normal");
         pdf.setFontSize(7);
-        pdf.setTextColor(150, 150, 150);
+        pdf.setTextColor(...gray400);
         pdf.text(`Weather data retrieved on ${new Date().toLocaleDateString()}`, margin, y);
         y += 5;
     }
 
-    // Day by Day Details
+    // Day-by-Day Details
     for (let i = 0; i < route.routes.length; i++) {
         const dayRoute = route.routes[i];
 
         checkPage(60);
         y += 3;
 
-        // Day header with accent underline
-        pdf.setFont("helvetica", "bold");
+        // Day header - font-black text-black with accent underline
+        pdf.setFont("Mont", "bold");
         pdf.setFontSize(14);
-        pdf.setTextColor(...headerColor);
-        const dayTitle = `Day ${dayRoute.day}: ${dayRoute.start}${route.tripType !== "trek" && dayRoute.end ? ` → ${dayRoute.end}` : ""}`;
+        pdf.setTextColor(...black);
+        const dayTitle = `Day ${dayRoute.day}: ${dayRoute.start}${route.tripType !== "trek" && dayRoute.end ? ` \u2192 ${dayRoute.end}` : ""}`;
         pdf.text(dayTitle, margin, y);
         y += 2;
         pdf.setDrawColor(...accentColor);
@@ -125,13 +149,14 @@ export function buildTripPDF(route, mapImages, locationImage) {
         pdf.line(margin, y, margin + contentWidth, y);
         y += 5;
 
-        // Distance and description
-        pdf.setFont("helvetica", "normal");
+        // Distance - text-gray-600
+        pdf.setFont("Mont", "normal");
         pdf.setFontSize(10);
-        pdf.setTextColor(...subColor);
-        pdf.text(`Distance: ${dayRoute.distance_km} km`, margin, y);
+        pdf.setTextColor(...gray600);
+        pdf.text(`${dayRoute.distance_km} km`, margin, y);
         y += 5;
 
+        // Description - text-gray-600
         if (dayRoute.description) {
             const descLines = pdf.splitTextToSize(dayRoute.description, contentWidth);
             checkPage(descLines.length * 4 + 5);
@@ -139,9 +164,10 @@ export function buildTripPDF(route, mapImages, locationImage) {
             y += descLines.length * 4 + 3;
         }
 
+        // Setting tag - text-gray-400
         if (dayRoute.setting) {
             pdf.setFontSize(9);
-            pdf.setTextColor(120, 120, 120);
+            pdf.setTextColor(...gray400);
             pdf.text(`Setting: ${dayRoute.setting}`, margin, y);
             y += 5;
         }
@@ -150,15 +176,18 @@ export function buildTripPDF(route, mapImages, locationImage) {
         if (dayRoute.waypoints && dayRoute.waypoints.length > 0) {
             checkPage(dayRoute.waypoints.length * 5 + 10);
             y += 2;
-            pdf.setFont("helvetica", "bold");
+
+            // Waypoints header - font-black text-black
+            pdf.setFont("Mont", "bold");
             pdf.setFontSize(10);
-            pdf.setTextColor(...headerColor);
+            pdf.setTextColor(...black);
             pdf.text("Waypoints:", margin, y);
             y += 5;
 
-            pdf.setFont("helvetica", "normal");
+            // Waypoint items - text-gray-600
+            pdf.setFont("Mont", "normal");
             pdf.setFontSize(9);
-            pdf.setTextColor(...subColor);
+            pdf.setTextColor(...gray600);
 
             dayRoute.waypoints.forEach((wp, j) => {
                 checkPage(5);
@@ -168,7 +197,7 @@ export function buildTripPDF(route, mapImages, locationImage) {
             y += 2;
         }
 
-       // Static map for this day
+        // Static map for this day
         if (mapImages[i]) {
             const mapH = (contentWidth * 400) / 600;
             checkPage(mapH + 5);
@@ -177,17 +206,17 @@ export function buildTripPDF(route, mapImages, locationImage) {
             y += mapH + 5;
         }
 
-        // Separator between days (except last)
+        // Separator between days (except last) - border-gray-300
         if (i < route.routes.length - 1) {
             checkPage(10);
-            pdf.setDrawColor(200, 200, 200);
+            pdf.setDrawColor(...gray300);
             pdf.setLineWidth(0.3);
             pdf.line(margin + 20, y, margin + contentWidth - 20, y);
             y += 16;
         }
     }
 
-    // Save
+    // Save with sanitized filename
     const filename = `${route.location.replace(/[^a-zA-Z0-9]/g, "_")}_trip.pdf`;
     pdf.save(filename);
 }
