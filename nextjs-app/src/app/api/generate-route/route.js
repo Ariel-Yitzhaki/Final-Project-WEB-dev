@@ -25,7 +25,7 @@ export async function POST(request) {
                 If ${location} is a city, plan routes to nearby cities/towns within cycling distance.
                 Each day's route should end where the next day's route begins.
                 Do NOT repeat the same waypoint at the end of one day and the start of the next - the connection is handled automatically.
-                The straight-line distance between the first and last waypoint of each day must be no more than 70 km.
+                The straight-line distance between the first and last waypoint of each day must be no more than 30 km.
 
                 All waypoint names must be well-known cities, towns, landmarks, or attractions.
                 Include 8-10 waypoints per day.
@@ -138,6 +138,27 @@ export async function POST(request) {
                     waypoint.lng = real.lng;
                 }
                 // If geocoding fails, Groq's original coordinates are kept
+            }
+        }
+        // Remove outlier waypoints that geocoded to the wrong location (cycling only)
+        if (tripType === "cycling") {
+            for (const route of routeData.routes) {
+                route.waypoints = route.waypoints.filter((wp, idx, arr) => {
+                    if (arr.length <= 2) return true;
+                    // Get the previous and next waypoint (or nearest available)
+                    const prev = arr[Math.max(0, idx - 1)];
+                    const next = arr[Math.min(arr.length - 1, idx + 1)];
+                    if (prev === wp || next === wp) return true;
+                    
+                    const distToPrev = Math.sqrt(Math.pow(wp.lat - prev.lat, 2) + Math.pow(wp.lng - prev.lng, 2));
+                    const distToNext = Math.sqrt(Math.pow(wp.lat - next.lat, 2) + Math.pow(wp.lng - next.lng, 2));
+                    const prevToNext = Math.sqrt(Math.pow(prev.lat - next.lat, 2) + Math.pow(prev.lng - next.lng, 2));
+                    
+                    // If this point is much farther from both neighbors than they are from each other, it's an outlier
+                    // 0.5 degrees ≈ 55km, so this catches points that are way off
+                    const maxNeighborDist = Math.max(distToPrev, distToNext);
+                    return maxNeighborDist < 0.5 || maxNeighborDist < prevToNext * 3;
+                });
             }
         }
         return NextResponse.json(routeData);
