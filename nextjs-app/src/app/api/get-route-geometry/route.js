@@ -24,7 +24,8 @@ export async function POST(request) {
                 const orsData = await orsRes.json();
                 if (orsData.features?.[0]?.geometry?.coordinates) {
                     const geometry = orsData.features[0].geometry.coordinates.map(c => [c[1], c[0]]); // Convert back to [lat, lng]
-                    return NextResponse.json({ geometry });
+                    const distanceKm = Math.round((orsData.features[0].properties.summary.distance / 1000) * 10) / 10;
+                    return NextResponse.json({ geometry, distanceKm });
                 }
             } catch (err) {
                 console.log("ORS failed, falling back to Google:", err.message);
@@ -51,25 +52,34 @@ export async function POST(request) {
         if (data.status !== "OK") {
             // Fallback: trying to route consecutive pairs
             const geometry = [];
+            let totalMeters = 0;
             for (let i = 0; i < waypoints.length - 1; i++) {
                 const pairUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${waypoints[i].lat},${waypoints[i].lng}&destination=${waypoints[i + 1].lat},${waypoints[i + 1].lng}&mode=${mode}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
                 const pairRes = await fetch(pairUrl);
                 const pairData = await pairRes.json();
                 if (pairData.status === "OK") {
-                    geometry.push(...decodePolyline(pairData.routes[0].overview_polyline.points));
+                    geometry.push(...pairData.routes[0].legs.flatMap(leg =>
+                        leg.steps.flatMap(step => decodePolyline(step.polyline.points))
+                    ));
+                    totalMeters += pairData.routes[0].legs.reduce((sum, leg) => sum + leg.distance.value, 0);
                 }
                 // Skip segments that can't be routed
             }
             if (geometry.length > 0) {
-                return NextResponse.json({ geometry });
+                const distanceKm = Math.round(totalMeters / 100) / 10;
+                return NextResponse.json({ geometry, distanceKm });
             }
             return NextResponse.json({ error: data.status }, { status: 400 });
         }
 
-        // Decode the polyline from Google's response
-        const geometry = decodePolyline(data.routes[0].overview_polyline.points);
+        // Decode detailed polylines from each step of each leg for road-accurate geometry
+        const geometry = data.routes[0].legs.flatMap(leg =>
+            leg.steps.flatMap(step => decodePolyline(step.polyline.points))
+        );
 
-        return NextResponse.json({ geometry });
+        const distanceKm = Math.round(data.routes[0].legs.reduce((sum, leg) => sum + leg.distance.value, 0) / 100) / 10;
+
+        return NextResponse.json({ geometry, distanceKm });
     } catch (error) {
         console.error("Routing error:", error.message);
         return NextResponse.json({ error: "Failed to get route" }, { status: 500 });
