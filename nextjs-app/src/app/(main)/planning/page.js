@@ -18,6 +18,7 @@ export default function PlanningPage() {
     const [result, setResult] = useState(null);
     const [resultTripType, setResultTripType] = useState(null);
     const [routeGeometries, setRouteGeometries] = useState([]);
+    const [routeDistances, setRouteDistances] = useState([]);
     const [error, setError] = useState("");
     const [weather, setWeather] = useState(null);
     const [image, setImage] = useState(null);
@@ -31,6 +32,10 @@ export default function PlanningPage() {
         setError("");
         setResult(null);
         setSaved(false);
+        setRouteGeometries([]);
+        setRouteDistances([]);
+        setWeather(null);
+        setImage(null);
         setResultTripType(tripType);
 
         try {
@@ -124,7 +129,7 @@ export default function PlanningPage() {
                     {result && (
                         <div className="flex items-start w-full" style={{ padding: '1.25vw', gap: '0.40vw' }}>
                             <div className="min-w-0" style={{ width: '42.97vw' }}>
-                                <TripResults {...{ result, resultTripType, image, weather, saved }} onApprove={handleApprove} />
+                                <TripResults {...{ result, resultTripType, image, weather, saved, routeDistances }} onApprove={handleApprove} />
                             </div>
                             <div style={{
                                 width: '31.25vw',
@@ -140,7 +145,10 @@ export default function PlanningPage() {
                                 <TripMap
                                     routes={result.routes}
                                     tripType={resultTripType}
-                                    onGeometryLoaded={setRouteGeometries}
+                                    onGeometryLoaded={(geometries, distances) => {
+                                        setRouteGeometries(geometries);
+                                        setRouteDistances(distances || []);
+                                    }}
                                 />
                             </div>
                         </div>

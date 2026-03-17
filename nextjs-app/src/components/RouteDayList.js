@@ -1,6 +1,6 @@
 // Shared component - displays route details for each day
 // showEnd: if true, displays end location (used in history page)
-export default function RouteDayList({ routes, showEnd = false, tripType }) {
+export default function RouteDayList({ routes, showEnd = false, tripType, routeDistances }) {
     return (
         <div>
             {routes.map((route, i) => (
@@ -8,7 +8,7 @@ export default function RouteDayList({ routes, showEnd = false, tripType }) {
                     <h3 className="font-black text-black" style={{ fontSize: '0.63vw' }}>
                         Day {route.day}: &nbsp;{route.start}{showEnd && tripType !== "trek" && route.end ? ` → ${route.end}` : ''}
                     </h3>
-                    <p className="text-gray-600" style={{ fontSize: '0.55vw' }}>{route.distance_km} km - {route.description}</p>
+                    <p className="text-gray-600" style={{ fontSize: '0.55vw' }}>{routeDistances?.[i] || route.distance_km} km - {route.description}</p>
                 </div>
             ))}
         </div>

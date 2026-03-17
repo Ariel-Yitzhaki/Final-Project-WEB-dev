@@ -19,6 +19,7 @@ export default function TripMap({ routes, tripType, onGeometryLoaded, savedGeome
     if (!routes || routes.length === 0) return null;
 
     const [geometries, setGeometries] = useState([]);
+    const [distances, setDistances] = useState([]);
 
     // Fetch real road geometry for each route
     useEffect(() => {
@@ -30,11 +31,11 @@ export default function TripMap({ routes, tripType, onGeometryLoaded, savedGeome
 
         async function fetchGeometries() {
             const profile = tripType === "cycling" ? "cycling-regular" : "foot-hiking";
-            const results = [];
+            const geoResults = [];
+            const distResults = [];
 
             for (const route of routes) {
                 try {
-                    // For circular routes (Trekks), add the first waypoint at the end to ensure it loops back
                     let waypoints = route.waypoints;
                     if (tripType === "trek" && waypoints.length > 0) {
                         waypoints = [...waypoints, waypoints[0]];
@@ -45,14 +46,17 @@ export default function TripMap({ routes, tripType, onGeometryLoaded, savedGeome
                         body: JSON.stringify({ waypoints, profile, setting: route.setting })
                     });
                     const data = await res.json();
-                    results.push(data.geometry || route.waypoints.map(w => [w.lat, w.lng]));
+                    geoResults.push(data.geometry || route.waypoints.map(w => [w.lat, w.lng]));
+                    distResults.push(data.distanceKm || null);
                 } catch (error) {
-                    results.push(route.waypoints.map(w => [w.lat, w.lng])); // Fallback to straight lines on error
+                    geoResults.push(route.waypoints.map(w => [w.lat, w.lng]));
+                    distResults.push(null);
                 }
             }
-            setGeometries(results);
+            setGeometries(geoResults);
+            setDistances(distResults);
             if (onGeometryLoaded) {
-                onGeometryLoaded(results);
+                onGeometryLoaded(geoResults, distResults);
             }
         }
         fetchGeometries();
@@ -138,7 +142,7 @@ export default function TripMap({ routes, tripType, onGeometryLoaded, savedGeome
                         <Popup>
                             <strong>{w.name}</strong>
                             <br />
-                            Day {route.day} - {route.distance_km} km
+                            Day {route.day} - {distances[i] || route.distance_km} km
                         </Popup>
                     </Marker>
                 ))

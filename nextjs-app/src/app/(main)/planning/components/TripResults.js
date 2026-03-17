@@ -1,7 +1,7 @@
 import TripContentLayout from "@/components/TripContentLayout";
 // Displays generated route results - image, weather, day details, and approve button
 // Map has been moved to PlanningPage for side-by-side layout
-export default function TripResults({ result, resultTripType, image, weather, saved, onApprove }) {
+export default function TripResults({ result, resultTripType, image, weather, saved, onApprove, routeDistances }) {
     return (
         <div
             className="flex flex-col items-start"
@@ -22,6 +22,7 @@ export default function TripResults({ result, resultTripType, image, weather, sa
                     weather={weather}
                     routes={result.routes}
                     tripType={resultTripType}
+                    routeDistances={routeDistances}
                 />
                 {/* Save route to history */}
                 {!saved ? (

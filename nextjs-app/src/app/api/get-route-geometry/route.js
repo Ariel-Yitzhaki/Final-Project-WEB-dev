@@ -32,7 +32,7 @@ export async function POST(request) {
             }
             // Continue to Google routing if ORS fails
         }
-        
+
         // Google needs origin, destination, and waypoints in between
         const origin = `${waypoints[0].lat},${waypoints[0].lng}`;
         const destination = `${waypoints[waypoints.length - 1].lat},${waypoints[waypoints.length - 1].lng}`;
