@@ -49,14 +49,16 @@ export default function PlanningPage() {
                     setWeather(weatherRes.data.forecasts);
                 } catch { setWeather(null); }
             }
+
+            try {
+                const imageRes = await axios.post("/api/get-image", { country: location });
+                setImage(imageRes.data);
+            } catch { setImage(null); }
         } catch (err) {
-            setError(err.response?.data?.message || "Failed to generate route");
+            setError(err.response?.data?.message || "Failed to generate route. Please try again.");
+        } finally {
+            setLoading(false);
         }
-        try {
-            const imageRes = await axios.post("/api/get-image", { country: location });
-            setImage(imageRes.data);
-        } catch { setImage(null); }
-        finally { setLoading(false); }
     }
 
     async function handleApprove() {
@@ -125,7 +127,12 @@ export default function PlanningPage() {
                             <p className="font-bold text-orange-500" style={{ fontSize: '2.34vw' }}>Let's get started, generate a trip!</p>
                         </div>
                     )}
-                    {error && <p className="text-red-500 text-center" style={{ marginTop: '0.63vw' }}>{error}</p>}
+                    {error && (
+                        <div className="flex flex-col items-center justify-center h-full" style={{ paddingBottom: '15.63vw' }}>
+                            <p className="font-bold text-red-500" style={{ fontSize: '1.5vw' }}>{error}</p>
+                            <p style={{ fontSize: '0.9vw', marginTop: '0.5vw', color: '#8e8fd3ec' }}>Please try generating again.</p>
+                        </div>
+                    )}
                     {result && (
                         <div className="flex items-start w-full" style={{ padding: '1.25vw', gap: '0.40vw' }}>
                             <div className="min-w-0" style={{ width: '42.97vw' }}>
