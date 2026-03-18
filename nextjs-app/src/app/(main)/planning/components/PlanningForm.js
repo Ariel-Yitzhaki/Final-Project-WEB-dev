@@ -9,7 +9,7 @@ export default function PlanningForm({ location, setLocation, tripType, setTripT
         <form onSubmit={onSubmit} style={{ backgroundColor: '#1A1A1A', padding: '0.94vw', paddingTop: '1.56vw' }}>
             {/* Location input */}
             <label className="block text-white font-semibold" style={{ marginBottom: '0.31vw', fontSize: '0.63vw' }}>Country / City</label>
-            <input type="text" value={location} onChange={(e) => setLocation(e.target.value)}
+            <input type="text" value={location} onChange={(e) => setLocation(e.target.value.replace(/[^a-zA-Z\s\-,.]/g, ''))}
                 className="w-full border-2 border-gray-600 text-white bg-black"
                 style={{ padding: '0.31vw', marginBottom: '0.63vw', borderRadius: '0.63vw', fontSize: '0.63vw' }}
                 placeholder="e.g. Switzerland, Tokyo" required />
