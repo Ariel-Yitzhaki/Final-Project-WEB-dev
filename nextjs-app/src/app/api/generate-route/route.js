@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 // Takes a place name and location context, returns real coordinates from Google
 async function geocodeWaypoint(name, locationContext) {
     const query = encodeURIComponent(`${name}, ${locationContext}`);
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
     const res = await fetch(url);
     const data = await res.json();
     if (data.status === "OK" && data.results.length > 0) {

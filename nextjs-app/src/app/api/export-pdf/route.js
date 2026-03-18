@@ -67,7 +67,7 @@ export async function POST(request) {
                 const color = j === 0 ? "green" : j === route.waypoints.length - 1 ? "red" : "blue";
                 markers += `&markers=color:${color}|label:${label}|${wp.lat},${wp.lng}`;
             });
-            const url = `https://maps.googleapis.com/maps/api/staticmap?size=600x400&path=weight:3|color:${color}|enc:${encodedPath}${markers}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+            const url = `https://maps.googleapis.com/maps/api/staticmap?size=600x400&path=weight:3|color:${color}|enc:${encodedPath}${markers}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
 
             const res = await fetch(url);
             if (!res.ok) {

@@ -44,7 +44,7 @@ export async function POST(request) {
             waypointsParam = `&waypoints=${middlePoints.join("|")}`;
         }
 
-        const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}${waypointsParam}&mode=${mode}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+        const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}${waypointsParam}&mode=${mode}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
 
         const response = await fetch(url);
         const data = await response.json();
@@ -54,7 +54,7 @@ export async function POST(request) {
             const geometry = [];
             let totalMeters = 0;
             for (let i = 0; i < waypoints.length - 1; i++) {
-                const pairUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${waypoints[i].lat},${waypoints[i].lng}&destination=${waypoints[i + 1].lat},${waypoints[i + 1].lng}&mode=${mode}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+                const pairUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${waypoints[i].lat},${waypoints[i].lng}&destination=${waypoints[i + 1].lat},${waypoints[i + 1].lng}&mode=${mode}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
                 const pairRes = await fetch(pairUrl);
                 const pairData = await pairRes.json();
                 if (pairData.status === "OK") {
