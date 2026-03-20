@@ -62,3 +62,13 @@ body {
 .leaflet-container {
   min-height: 0;
 }
+
+/* Animation for home page arrow */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.6vw);
+  }
+}
