@@ -1,11 +1,15 @@
 "use client";
-// Home page
 import Link from "next/link";
 import { useRef, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import PlanningForm from "./planning/components/PlanningForm";
 
 export default function Home() {
+  // Scroll snapping state:
+  // scrollCount tracks consecutive wheel ticks in the same direction
+  // lastDirection stores previous scroll direction (1 = down, -1 = up)
+  // isSnapping prevents input during snap animation
+  // activeSection controls which section's arrow indicator is visible
   const containerRef = useRef(null);
   const scrollCount = useRef(0);
   const lastDirection = useRef(0);
@@ -19,6 +23,7 @@ export default function Home() {
   const [tripType, setTripType] = useState("trek");
   const [days, setDays] = useState(1);
 
+  // Redirect to planning page with form values as URL params
   function handleHomeSubmit(e) {
     e.preventDefault();
     router.push(`/planning?location=${encodeURIComponent(location)}&tripType=${tripType}&days=${days}`);
@@ -28,7 +33,7 @@ export default function Home() {
     const el = containerRef.current;
     if (!el) return;
 
-    // Helper functions for handling the scrolling
+    // Animate scroll to a target position with ease-out easing
     function smoothScroll(target, ms) {
       const start = el.scrollTop;
       const distance = target - start;
@@ -45,7 +50,8 @@ export default function Home() {
       requestAnimationFrame(step);
     }
 
-    // Make scrolling on home page more seamless
+    // Custom scroll handler: small scrolls nudge the page, 3+ consecutive
+    // ticks in the same direction trigger a full snap to the next section
     function handleWheel(e) {
       if (!e || e.deltaY === 0) return;
       e.preventDefault();
@@ -63,7 +69,6 @@ export default function Home() {
       scrollCount.current++;
 
       if (scrollCount.current < 3) {
-        // Pass a target — don't mutate scrollTop directly
         smoothScroll(el.scrollTop + direction * scrollPerTick);
       } else {
         isSnapping.current = true;
@@ -84,6 +89,7 @@ export default function Home() {
 
   return (
     <div ref={containerRef} style={{ height: '100vh', overflowY: 'hidden' }}>
+      {/* Hero section - background image with Hebrew title */}
       <div className="h-screen flex flex-col items-end justify-start"
         style={{
           position: 'relative',
@@ -100,6 +106,7 @@ export default function Home() {
           <div style={{ position: 'relative', right: '35vw', marginTop: '-1vw' }}>אפקה</div>
           <div style={{ position: 'relative', right: '43vw', marginTop: '1.3vw', color: 'white', fontSize: '6vw' }}>2026</div>
         </h1>
+        {/* Scroll-down arrow indicator - fades out when leaving section 0 */}
         <div style={{
           position: 'absolute',
           bottom: '2vw',
@@ -123,7 +130,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Second section — add your content here */}
+      {/* Form section - quick planning form that redirects to /planning */}
       <div className="h-screen flex flex-col items-center justify-center"
         style={{
           position: 'relative',
@@ -143,6 +150,7 @@ export default function Home() {
             onSubmit={handleHomeSubmit}
           />
         </div>
+        {/* Scroll-up arrow indicator - fades in when on section 1 */}
         <div style={{
           position: 'absolute',
           top: '6vw',

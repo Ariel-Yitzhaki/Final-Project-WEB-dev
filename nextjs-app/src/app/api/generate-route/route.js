@@ -130,7 +130,7 @@ export async function POST(request) {
 
         // Replace Groq's guessed coordinates with real ones from Google Geocoding API for better routing results
         for (const route of routeData.routes) {
-            const geocodeContext = route.area || location;
+            const geocodeContext = route.area ? `${route.area}, ${location}` : location;
             for (const waypoint of route.waypoints) {
                 const real = await geocodeWaypoint(waypoint.name, geocodeContext);
                 if (real) {
