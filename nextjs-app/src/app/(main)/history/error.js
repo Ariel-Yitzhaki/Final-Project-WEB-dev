@@ -2,7 +2,7 @@
 // Error UI shown when history page fails to load
 export default function HistoryError({ error, reset }) {
     return (
-        <div className="min-h-screen bg-gray-100" style={{ padding: '0.31vw', paddingTop: '0.94vw' }}>
+        <div style={{ backgroundColor: '#000000', minHeight: '100vh', padding: '0.31vw', paddingTop: '0.94vw' }}>
             <h1 className="font-bold text-center text-black" style={{ fontSize: '1.17vw', marginBottom: '0.94vw' }}>History</h1>
             <p className="text-red-500 text-center" style={{ marginBottom: '0.63vw', fontSize: '0.63vw' }}>{error.message || "Something went wrong"}</p>
             {/* reset() re-renders the page segment, retrying the server fetch */}
