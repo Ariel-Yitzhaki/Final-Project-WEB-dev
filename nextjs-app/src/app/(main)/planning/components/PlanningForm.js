@@ -14,6 +14,7 @@ export default function PlanningForm({ location, setLocation, tripType, setTripT
         if (tripType === "cycling" && days < 2) setDays(2);
     }, [tripType]);
 
+
     // Close dropdown when clicking outside
     useEffect(() => {
         function handleClickOutside(e) {
@@ -53,14 +54,15 @@ export default function PlanningForm({ location, setLocation, tripType, setTripT
     }
 
     async function handleSelect(suggestion) {
-        const place = suggestion.placePrediction.toPlace();
-        await place.fetchFields({ fields: ["displayName"] });
-        const name = place.displayName || suggestion.placePrediction.text.toString();
-        setLocation(name);
-        setSelectedFromList(true);
-        setSuggestions([]);
-        setShowDropdown(false);
-    }
+    const place = suggestion.placePrediction.toPlace();
+    await place.fetchFields({ fields: ["displayName"] });
+    const name = place.displayName || suggestion.placePrediction.text.toString();
+    setLocation(name);
+    setSelectedFromList(true);
+    setShowWarning(false);
+    setSuggestions([]);
+    setShowDropdown(false);
+}
 
     return (
         <form onSubmit={(e) => {
@@ -79,7 +81,8 @@ export default function PlanningForm({ location, setLocation, tripType, setTripT
                     onFocus={() => { if (suggestions.length > 0) setShowDropdown(true); }}
                     className="w-full border-2 border-gray-600 text-white bg-black"
                     style={{ padding: '0.31vw', marginBottom: '0.63vw', borderRadius: '0.63vw', fontSize: '0.63vw' }}
-                    placeholder="e.g. Switzerland, Tokyo" required autoComplete="off" />
+                    // using new-password so browser respects no filling autoComplete in search bar
+                    placeholder="e.g. Switzerland, Tokyo" required autoComplete="new-password" />
                 {showDropdown && suggestions.length > 0 && (
                     <ul style={{
                         position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 1000,

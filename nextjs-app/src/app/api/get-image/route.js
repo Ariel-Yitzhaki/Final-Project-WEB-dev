@@ -19,6 +19,9 @@ export async function POST(request) {
 
         // Return image URL, alt text, and photographer credit
         const image = data.results[0];
+        if (!image) {
+            return NextResponse.json({ error: "No image found" }, { status: 404 });
+        }
         return NextResponse.json({
             url: image.urls.regular,
             alt: image.alt_description || country,
