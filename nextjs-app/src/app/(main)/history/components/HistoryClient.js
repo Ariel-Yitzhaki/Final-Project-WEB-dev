@@ -77,7 +77,7 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                 maxWidth: '45vw',
                 margin: '0 auto',
                 marginTop: '3.5vw',
-                backgroundColor: 'rgb(255, 255, 255)',
+                backgroundColor: 'rgb(233, 232, 232)',
                 borderRadius: '1.25vw',
                 padding: '1.56vw 2.5vw',
                 minHeight: '80vh',
