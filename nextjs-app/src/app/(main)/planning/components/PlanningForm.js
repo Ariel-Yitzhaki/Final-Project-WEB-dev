@@ -14,7 +14,6 @@ export default function PlanningForm({ location, setLocation, tripType, setTripT
         if (tripType === "cycling" && days < 2) setDays(2);
     }, [tripType]);
 
-
     // Close dropdown when clicking outside
     useEffect(() => {
         function handleClickOutside(e) {

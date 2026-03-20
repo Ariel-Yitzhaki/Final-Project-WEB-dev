@@ -23,7 +23,7 @@ export default function Register() {
   }
   return (
     <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#000000' }}>
-      <form onSubmit={handleSubmit} style={{ padding: '1.56vw', borderRadius: '0.39vw', width: '15.63vw', backgroundColor: '#1A1A1A', boxShadow: '0px 0.23vw 1.17vw rgba(0, 0, 0, 0.3)' }}>
+      <form onSubmit={handleSubmit} style={{ padding: '1.56vw', borderRadius: '1vw', width: '15.63vw', backgroundColor: '#1A1A1A', boxShadow: '0px 0.23vw 1.17vw rgba(0, 0, 0, 0.3)' }}>
         <h1 className="font-bold text-center text-white" style={{ fontSize: '1.17vw', marginBottom: '1.56vw' }}>Register</h1>
         {error && <p className="text-red-500" style={{ fontSize: '0.67vw', marginBottom: '0.59vw' }}>{error}</p>}
         {success && <p className="text-green-500" style={{ fontSize: '0.67vw', marginBottom: '0.59vw' }}>{success}</p>}

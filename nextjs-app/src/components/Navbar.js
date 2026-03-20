@@ -10,6 +10,7 @@ export default function Navbar() {
             alignItems: "center",
             padding: "0.98vw 1.17vw",
             backgroundColor: "#030303",
+            borderBottom: "0.08vw solid white",
             position: "fixed",
             top: 0,
             right: 0,

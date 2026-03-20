@@ -135,10 +135,13 @@ export default function Home() {
         style={{
           position: 'relative',
           scrollSnapAlign: 'start',
-          backgroundColor: '#000000',
+          backgroundImage: "url('/homePageBackground.jpg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
         }}>
         <p className="text-white font-bold" style={{ fontSize: '1.5vw', marginBottom: '1.5vw' }}>Fill Out The Form To Start</p>
-        <div style={{ width: '18vw' }}>
+        <div style={{ width: '18vw', borderRadius: '1.5vw', overflow: 'hidden' }}>
           <PlanningForm
             location={location}
             setLocation={setLocation}
