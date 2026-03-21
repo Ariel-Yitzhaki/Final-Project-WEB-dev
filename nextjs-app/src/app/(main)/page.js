@@ -94,22 +94,22 @@ export default function Home() {
         style={{
           position: 'relative',
           scrollSnapAlign: 'start',
-          paddingTop: '6.5vw',
+          paddingTop: '6.5%',
           backgroundImage: "url('/website_background3.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
         }}>
-        <h1 className="font-bold text-black" style={{ fontSize: '3.53vw', marginBottom: '1.25vw' }}>
-          <div style={{ position: 'relative', right: '6.7vw', marginTop: '2.2vw' }}>מסלול</div>
-          <div style={{ position: 'relative', right: '24vw', marginTop: '-2.5vw' }}>טיולים</div>
-          <div style={{ position: 'relative', right: '35vw', marginTop: '-1vw' }}>אפקה</div>
-          <div style={{ position: 'relative', right: '43vw', marginTop: '1.3vw', color: 'white', fontSize: '6vw' }}>2026</div>
+        <h1 className="font-bold text-black" style={{ fontSize: 'clamp(2rem, 3.5vw, 8.5rem)', marginBottom: '2rem' }}>
+          <div style={{ position: 'relative', right: '6.7vw', marginTop: '2.2%' }}>מסלול</div>
+          <div style={{ position: 'relative', right: '24vw', marginTop: '-2.5%' }}>טיולים</div>
+          <div style={{ position: 'relative', right: '35vw', marginTop: '-1%' }}>אפקה</div>
+          <div style={{ position: 'relative', right: '43vw', marginTop: '1.3%', color: 'white', fontSize: 'clamp(3rem, 6vw, 14.5rem)' }}>2026</div>
         </h1>
         {/* Scroll-down arrow indicator - fades out when leaving section 0 */}
         <div style={{
           position: 'absolute',
-          bottom: '2vw',
+          bottom: '3rem',
           opacity: activeSection === 0 ? 1 : 0,
           transitionProperty: 'opacity',
           transitionDuration: '2s',
@@ -120,9 +120,9 @@ export default function Home() {
           flexDirection: 'column',
           alignItems: 'center',
         }}>
-          <p className="text-white font-semibold" style={{ fontSize: '0.7vw', marginBottom: '0.6vw' }}>Start Planning!</p>
+          <p className="text-white font-semibold" style={{ fontSize: '1.1rem', marginBottom: '0.9rem' }}>Start Planning!</p>
           <div style={{ animation: 'float 2s ease-in-out infinite' }}>
-            <svg width="2vw" height="2vw" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 1 }}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 1 }}>
               <path d="M12 5v14" />
               <path d="M19 12l-7 7-7-7" />
             </svg>
@@ -140,8 +140,8 @@ export default function Home() {
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
         }}>
-        <p className="text-white font-bold" style={{ fontSize: '1.5vw', marginBottom: '1.5vw' }}>Fill Out The Form To Start</p>
-        <div style={{ width: '18vw', borderRadius: '1.5vw', overflow: 'hidden' }}>
+        <p className="text-white font-bold" style={{ fontSize: '2.25rem', marginBottom: '1rem' }}>Fill Out The Form To Start</p>
+        <div style={{ width: 'min(28rem, 90vw)', borderRadius: '1rem', overflow: 'hidden' }}>
           <PlanningForm
             location={location}
             setLocation={setLocation}
@@ -156,7 +156,7 @@ export default function Home() {
         {/* Scroll-up arrow indicator - fades in when on section 1 */}
         <div style={{
           position: 'absolute',
-          top: '6vw',
+          top: '9.5rem',
           opacity: activeSection === 1 ? 1 : 0,
           transitionProperty: 'opacity',
           transitionDuration: '2s',
@@ -168,12 +168,12 @@ export default function Home() {
           alignItems: 'center',
         }}>
           <div style={{ animation: 'float 2s ease-in-out infinite' }}>
-            <svg width="2vw" height="2vw" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 1, transform: 'rotate(180deg)' }}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 1, transform: 'rotate(180deg)' }}>
               <path d="M12 5v14" />
               <path d="M19 12l-7 7-7-7" />
             </svg>
           </div>
-          <p className="text-white font-semibold" style={{ letterSpacing: '0.05vw', fontSize: '0.7vw', marginTop: '0.6vw' }}>Return</p>
+          <p className="text-white font-semibold" style={{ letterSpacing: '0.075rem', fontSize: '1.1rem', marginTop: '0.9rem' }}>Return</p>
         </div>
       </div>
     </div>

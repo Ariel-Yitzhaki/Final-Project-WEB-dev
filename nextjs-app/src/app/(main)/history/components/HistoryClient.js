@@ -45,13 +45,6 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
         }
     }
 
-    // Convert the map's top position to vw so it scales across screen sizes
-    function getMapTopVw() {
-        const vwMapTop = (mapTop / window.innerWidth) * 100;
-        const vwOffset = (160 / 2560) * 100;
-        return vwMapTop + vwOffset;
-    }
-
     return (
         <div style={{
             backgroundColor: '#000000',
@@ -70,30 +63,30 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
             transparent 90.7%
         )`,
             minHeight: '100vh',
-            padding: '0.31vw 0.31vw',
-            paddingTop: '0.94vw',
+            padding: '0.5rem',
+            paddingTop: '1.4rem',
         }}>
             <div style={{
-                maxWidth: '45vw',
+                maxWidth: '1050px',
                 margin: '0 auto',
-                marginTop: '3.5vw',
+                marginTop: '5.5rem',
                 backgroundColor: 'rgb(233, 232, 232)',
-                borderRadius: '1.25vw',
-                padding: '1.56vw 2.5vw',
+                borderRadius: '1rem',
+                padding: '2.4rem 3.8rem',
                 minHeight: '80vh',
             }}>
-                <div className="flex justify-center items-center relative" style={{ marginBottom: '0.23vw' }}>
-                    <h1 className="font-bold text-center text-black" style={{ fontSize: '2vw', paddingTop: '0.5vw', paddingBottom: '1.56vw' }}>
+                <div className="flex justify-center items-center relative" style={{ marginBottom: '0.35rem' }}>
+                    <h1 className="font-bold text-center text-black" style={{ fontSize: '2.6rem', paddingTop: '0.75rem', paddingBottom: '2.4rem' }}>
                         Trip History
                     </h1>
                     {/* Toggle delete mode - shows/hides delete buttons on cards */}
                     <button
                         onClick={() => setDeleteMode(!deleteMode)}
                         className={`absolute transition-colors cursor-pointer ${deleteMode ? "bg-red-500 text-white hover:bg-red-700 hover:text-white active:bg-gray-300" : "bg-gray-300 text-black hover:bg-gray-500 hover:text-white active:bg-red-500"}`}
-                        style={{ right: '0', top: '0.5vw', padding: '0.31vw', borderRadius: '0.4vw' }}
+                        style={{ right: '0', top: '0.75rem', padding: '0.47rem', borderRadius: '0.6rem' }}
                         title={deleteMode ? "Done deleting" : "Delete trips"}
                     >
-                        <svg style={{ width: '0.78vw', height: '0.78vw' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <svg style={{ width: '1.2rem', height: '1.2rem' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M3 6h18" />
                             <path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2" />
                             <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" />
@@ -102,27 +95,27 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                 </div>
                 {serverError && <p className="text-red-500 text-center">{serverError}</p>}
                 {!serverError && routes.length === 0 && (
-                    <p className="font-bold text-center text-gray-600" style={{marginTop: '6vw', fontSize: '0.8vw' }}>No saved routes yet. Plan a trip first!</p>
+                    <p className="font-bold text-center text-gray-600" style={{marginTop: '9.5rem', fontSize: '1.4rem' }}>No saved routes yet. Plan a trip first!</p>
                 )}
                 {routes.length > 0 && (
-                    <div className="flex justify-center" style={{ gap: '1.33vw', position: 'relative' }}>
-                        <div className="w-full" style={{ maxWidth: '35.16vw', display: 'flex', flexDirection: 'column', gap: '0.63vw' }}>
+                    <div className="flex justify-center" style={{ gap: '2rem', position: 'relative' }}>
+                        <div className="w-full" style={{ maxWidth: '800px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             {routes.map((route, i) => (
                                 <div
                                     key={i}
                                     ref={el => cardRefs.current[i] = el}
                                     className="bg-white flex flex-col items-start self-stretch"
                                     style={{
-                                        boxShadow: '0px 0.23vw 1.17vw rgba(0, 0, 0, 0.08)',
-                                        borderRadius: '0.94vw',
+                                        boxShadow: '0px 4px 18px rgba(0, 0, 0, 0.08)',
+                                        borderRadius: '1rem',
                                         overflow: 'visible',
                                         position: 'relative',
                                     }}
                                 >
-                                    <div className="flex flex-col items-start self-stretch w-full" style={{ gap: '1.33vw', padding: '1.56vw 2.66vw' }}>
+                                    <div className="flex flex-col items-start self-stretch w-full" style={{ gap: '2rem', padding: '2.4rem 4rem' }}>
                                         <div
                                             className="w-full group cursor-pointer flex items-center"
-                                            style={{ margin: '-1.56vw -2.66vw', padding: '1.56vw 2.66vw', width: 'calc(100% + 5.31vw)' }}
+                                            style={{ margin: '-2.4rem -4rem', padding: '1.8rem 4rem', width: 'calc(100% + 7rem)' }}
                                             onClick={() => selectedRoute?._id === route._id ? setSelectedRoute(null) : handleSelectRoute(route, i)}
                                         >
                                             <div className="flex-1">
@@ -140,8 +133,8 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                                                         const { exportTripPDF } = await import("@/utils/exportTripPDF");
                                                         await exportTripPDF({ ...route, weather })
                                                     }}
-                                                    className="w-full text-black font-semibold border-2 border-transparent transition-all cursor-pointer"
-                                                    style={{ padding: '0.47vw', borderRadius: '0.63vw', fontSize: '0.63vw', backgroundColor: '#C6C7F8', marginTop: '0.63vw' }}
+                                                    className="w-full text-black font-bold border-2 border-transparent transition-all cursor-pointer"
+                                                    style={{ padding: '0.7rem', borderRadius: '1rem', fontSize: '1.2rem', backgroundColor: '#C6C7F8', marginTop: '1rem' }}
                                                     onMouseEnter={(e) => { e.target.style.backgroundColor = '#8e8fd3'; e.target.style.borderColor = 'white'; }}
                                                     onMouseLeave={(e) => { e.target.style.backgroundColor = '#C6C7F8'; e.target.style.borderColor = 'transparent'; }}
                                                 >
@@ -155,33 +148,33 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                                                 <button
                                                     onClick={(e) => { e.stopPropagation(); setConfirmDelete(route._id); }}
                                                     className="absolute text-red-400 hover:text-red-600 transition-colors rounded-full hover:bg-red-100 cursor-pointer"
-                                                    style={{ right: '0.55vw', top: '1.95vw', padding: '0', width: '1.4vw', height: '1.4vw', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                                    style={{ right: '0.55rem', top: '3.2rem', padding: '0', width: '2.5rem', height: '2.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                                                     title="Delete route"
                                                 >
-                                                    <svg style={{ width: '0.59vw', height: '0.59vw' }} viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                                                    <svg style={{ width: '1.3rem', height: '1.3rem' }} viewBox="-2 0 18 14" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
                                                         <path d="M1 1l12 12M13 1L1 13" />
                                                     </svg>
                                                 </button>
                                                 {confirmDelete === route._id && (
                                                     <div
                                                         className="absolute inset-0 flex items-center justify-center"
-                                                        style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: '0.94vw', zIndex: 20 }}
+                                                        style={{ backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: '1.4rem', zIndex: 20 }}
                                                         onClick={(e) => e.stopPropagation()}
                                                     >
                                                         <div className="text-center">
-                                                            <p className="text-black font-semibold" style={{ marginBottom: '0.78vw', fontSize: '0.7vw' }}>Delete this trip?</p>
-                                                            <div className="flex justify-center" style={{ gap: '0.59vw' }}>
+                                                            <p className="text-black font-semibold" style={{ marginBottom: '1.2rem', fontSize: '1.1rem' }}>Delete this trip?</p>
+                                                            <div className="flex justify-center" style={{ gap: '0.9rem' }}>
                                                                 <button
                                                                     onClick={() => { handleDeleteRoute(route._id); setConfirmDelete(null); }}
                                                                     className="bg-red-500 text-white hover:bg-red-600 cursor-pointer"
-                                                                    style={{ padding: '0.39vw 0.78vw', borderRadius: '0.39vw', fontSize: '0.55vw' }}
+                                                                    style={{ padding: '0.6rem 1.2rem', borderRadius: '0.6rem', fontSize: '0.85rem' }}
                                                                 >
                                                                     Delete
                                                                 </button>
                                                                 <button
                                                                     onClick={() => setConfirmDelete(null)}
                                                                     className="bg-gray-200 text-black hover:bg-gray-300 cursor-pointer"
-                                                                    style={{ padding: '0.39vw 0.78vw', borderRadius: '0.39vw', fontSize: '0.55vw' }}
+                                                                    style={{ padding: '0.6rem 1.2rem', borderRadius: '0.6rem', fontSize: '0.85rem' }}
                                                                 >
                                                                     Cancel
                                                                 </button>
@@ -198,15 +191,15 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                         {/* Right - map, positioned absolutely so it doesn't push cards */}
                         {selectedRoute && (
                             <div style={{
-                                width: '25.44vw',
-                                height: '22.55vw',
+                                width: '650px',
+                                height: '577px',
                                 position: 'absolute',
-                                top: `${getMapTopVw()}vw`,
-                                left: 'calc(50% + 18.5vw + 1.33vw - 3.32vw)',
-                                borderRadius: '0.70vw',
+                                top: `${mapTop + 10}px`,
+                                left: 'calc(100%)',
+                                borderRadius: '1rem',
                                 overflow: 'hidden',
-                                border: '0.12vw solid hsla(0, 0%, 0%, 0.88)',
-                                boxShadow: '0px 0.12vw 0.98vw rgba(0, 0, 0, 0.35)',
+                                border: '2.5px solid hsla(0, 0%, 0%, 0.88)',
+                                boxShadow: '0px 3px 15px rgba(0, 0, 0, 0.35)',
                                 zIndex: 10,
                             }}>
                                 <TripMap

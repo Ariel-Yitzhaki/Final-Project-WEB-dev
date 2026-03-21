@@ -2,22 +2,22 @@
 export default function TripCard({ route, isSelected }) {
     return (
         <div className="w-full flex items-center group" style={{ justifyContent: 'space-between' }}>
-            <div className="flex flex-col" style={{ gap: '0.31vw' }}>
-                <h2 className="font-black text-black leading-none tracking-normal" style={{ fontSize: '0.94vw' }}>
+            <div className="flex flex-col" style={{ gap: '0.5rem' }}>
+                <h2 className="font-black text-black leading-none tracking-normal" style={{ fontSize: '1.3rem' }}>
                     {route.location}
                 </h2>
-                <div className="flex items-center" style={{ gap: '0.78vw' }}>
-                    <p className="text-gray-600" style={{ fontSize: '0.63vw' }}>
+                <div className="flex items-center" style={{ gap: '1.2rem' }}>
+                    <p className="text-gray-600" style={{ fontSize: '1.1rem' }}>
                         {route.tripType === "cycling" ? "Cycling" : "Trek"} - {route.routes.length} day(s)
                     </p>
-                    <p className="text-gray-400" style={{ fontSize: '0.55vw' }}>
+                    <p className="text-gray-400" style={{ fontSize: '1.1rem' }}>
                         Saved on {new Date(route.createdAt).toLocaleDateString()}
                     </p>
                 </div>
             </div>
-            <div className="rounded-full group-hover:bg-gray-200 transition" style={{ padding: '0.31vw' }}>
+            <div className="rounded-full group-hover:bg-gray-200 transition" style={{ padding: '0.5rem' }}>
                 <svg
-                    style={{ width: '0.63vw', height: '0.63vw' }}
+                    style={{ width: '1.5rem', height: '1.5rem' }}
                     viewBox="0 0 16 16"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"

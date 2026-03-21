@@ -71,28 +71,28 @@ export default function PlanningForm({ location, setLocation, tripType, setTripT
                 return;
             }
             onSubmit(e);
-        }} style={{ backgroundColor: '#1A1A1A', padding: '0.94vw', paddingTop: '1.56vw' }}>
+        }} style={{ backgroundColor: '#1A1A1A', padding: '1.5rem', paddingTop: '2.4rem' }}>
             {/* Location input */}
-            <label className="block text-white font-semibold" style={{ marginBottom: '0.31vw', fontSize: '0.63vw' }}>Country / City</label>
+            <label className="block text-white font-semibold" style={{ marginBottom: '0.5rem', fontSize: '1.3rem' }}>Country / City</label>
             <div ref={wrapperRef} style={{ position: 'relative' }}>
                 <input type="text" value={location}
                     onChange={handleInputChange}
                     onFocus={() => { if (suggestions.length > 0) setShowDropdown(true); }}
                     className="w-full border-2 border-gray-600 text-white bg-black"
-                    style={{ padding: '0.31vw', marginBottom: '0.63vw', borderRadius: '0.63vw', fontSize: '0.63vw' }}
+                    style={{ padding: '0.5rem', marginBottom: '1rem', borderRadius: '1rem', fontSize: '1.1rem' }}
                     // using new-password so browser respects no filling autoComplete in search bar
                     placeholder="e.g. Switzerland, Tokyo" required autoComplete="new-password" />
                 {showDropdown && suggestions.length > 0 && (
                     <ul style={{
                         position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 1000,
-                        backgroundColor: '#1a1a1a', border: '1px solid #444', borderRadius: '0.4vw',
-                        listStyle: 'none', margin: 0, padding: 0, maxHeight: '12vw', overflowY: 'auto',
+                        backgroundColor: '#1a1a1a', border: '1px solid #444', borderRadius: '1rem',
+                        listStyle: 'none', margin: 0, padding: 0, maxHeight: '18rem', overflowY: 'auto',
                     }}>
                         {suggestions.map((s, i) => (
                             <li key={i}
                                 onClick={() => handleSelect(s)}
                                 style={{
-                                    padding: '0.35vw 0.5vw', fontSize: '0.6vw', color: '#fff',
+                                    padding: '0.55rem 0.75rem', fontSize: '1.1rem', color: '#fff',
                                     cursor: 'pointer', borderBottom: '1px solid #333',
                                 }}
                                 onMouseEnter={(e) => e.target.style.backgroundColor = '#333'}
@@ -104,24 +104,24 @@ export default function PlanningForm({ location, setLocation, tripType, setTripT
                     </ul>
                 )}
                 {showWarning && (
-                    <p style={{ color: '#ff6b6b', fontSize: '0.55vw', margin: '-0.4vw 0 0.4vw 0', textAlign: 'center' }}>
+                    <p style={{ color: '#ff6b6b', fontSize: '1.1rem', margin: '-0.5rem 0 0.6rem 0', textAlign: 'center' }}>
                         Please select a location from the list
                     </p>
                 )}
             </div>
             {/* Trip type selector */}
-            <label className="block text-white font-semibold" style={{ marginBottom: '0.31vw', fontSize: '0.63vw' }}>Trip Type</label>
+            <label className="block text-white font-semibold" style={{ marginBottom: '0.5rem', fontSize: '1.3rem' }}>Trip Type</label>
             <select value={tripType} onChange={(e) => setTripType(e.target.value)}
                 className="w-full border-2 border-gray-600 text-white bg-black"
-                style={{ padding: '0.31vw', marginBottom: '0.63vw', borderRadius: '0.63vw', fontSize: '0.63vw' }}>
+                style={{ padding: '0.5rem', marginBottom: '1rem', borderRadius: '1rem', fontSize: '1.1rem' }}>
                 <option value="trek">Trek (Walking)</option>
                 <option value="cycling">Cycling</option>
             </select>
             {/* Duration input - cycling requires minimum 2 days */}
-            <label className="block text-white font-semibold" style={{ marginBottom: '0.31vw', fontSize: '0.63vw' }}>Duration (days)</label>
+            <label className="block text-white font-semibold" style={{ marginBottom: '0.5rem', fontSize: '1.3rem' }}>Duration (days)</label>
             <select value={days} onChange={(e) => setDays(Number(e.target.value))}
                 className="w-full border-2 border-gray-600 text-white bg-black"
-                style={{ padding: '0.31vw', marginBottom: '0.63vw', borderRadius: '0.63vw', fontSize: '0.63vw' }} required>
+                style={{ padding: '0.5rem', marginBottom: '1rem', borderRadius: '1rem', fontSize: '1.1rem' }} required>
                 {tripType === "cycling" ? (
                     <>
                         <option value={2}>2</option>
@@ -136,8 +136,8 @@ export default function PlanningForm({ location, setLocation, tripType, setTripT
                 )}
             </select>
             <button type="submit" disabled={loading}
-                className="w-full text-black font-semibold border-2 border-transparent transition-all cursor-pointer"
-                style={{ padding: '0.31vw', borderRadius: '0.63vw', marginTop: '0.31vw', fontSize: '0.63vw', backgroundColor: loading ? 'orange' : '#C6C7F8' }}
+                className="w-full text-black font-bold border-2 border-transparent transition-all cursor-pointer"
+                style={{ padding: '0.5rem', borderRadius: '1rem', marginTop: '0.5rem', fontSize: '1.2rem', backgroundColor: loading ? 'orange' : '#C6C7F8' }}
                 onMouseEnter={(e) => { if (!loading) { e.target.style.backgroundColor = '#8e8fd3'; e.target.style.borderColor = 'white'; } }}
                 onMouseLeave={(e) => { if (!loading) { e.target.style.backgroundColor = '#C6C7F8'; e.target.style.borderColor = 'transparent'; } }}>
                 {loading ? "Generating..." : "Generate Trip"}
