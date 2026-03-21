@@ -84,7 +84,7 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
             }}>
                 <div className="flex justify-center items-center relative" style={{ marginBottom: '0.23vw' }}>
                     <h1 className="font-bold text-center text-black" style={{ fontSize: '2vw', paddingTop: '0.5vw', paddingBottom: '1.56vw' }}>
-                        History
+                        Trip History
                     </h1>
                     {/* Toggle delete mode - shows/hides delete buttons on cards */}
                     <button
@@ -100,10 +100,9 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                         </svg>
                     </button>
                 </div>
-                <div style={{ width: '45%', margin: '0 auto', height: '0.04vw', background: 'linear-gradient(to right, transparent, black, transparent)', marginBottom: '1.94vw' }} />
                 {serverError && <p className="text-red-500 text-center">{serverError}</p>}
                 {!serverError && routes.length === 0 && (
-                    <p className="text-center text-gray-600">No saved routes yet. Plan a trip first!</p>
+                    <p className="font-bold text-center text-gray-600" style={{marginTop: '6vw', fontSize: '0.8vw' }}>No saved routes yet. Plan a trip first!</p>
                 )}
                 {routes.length > 0 && (
                     <div className="flex justify-center" style={{ gap: '1.33vw', position: 'relative' }}>
