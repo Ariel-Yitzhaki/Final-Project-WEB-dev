@@ -74,7 +74,7 @@ export default function Home() {
         isSnapping.current = true;
         scrollCount.current = 0;
         const currentSection = Math.round(el.scrollTop / viewportH);
-        const targetSection = Math.max(0, currentSection + direction);
+        const targetSection = Math.min(1, Math.max(0, currentSection + direction));
         setActiveSection(targetSection);
         activeSectionRef.current = targetSection;
         smoothScroll(targetSection * viewportH, 600);

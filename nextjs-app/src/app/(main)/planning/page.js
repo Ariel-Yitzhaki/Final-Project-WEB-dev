@@ -73,6 +73,7 @@ export default function PlanningPage() {
                 transparent 90.7%
             )`,
             minHeight: '100vh',
+            minWidth: '2000px',
         }}>
             {/* Two-column layout: form on left, results on right */}
             <div style={{
@@ -82,8 +83,7 @@ export default function PlanningPage() {
                 {/* Left panel - Planning Form */}
                 <div style={{
                     position: 'relative',
-                    width: '20%',
-                    minWidth: '20rem',
+                    width: '400px',
                     minHeight: '100vh',
                     marginLeft: '1.2rem',
                     backgroundColor: '#1A1A1A',
@@ -95,9 +95,9 @@ export default function PlanningPage() {
 
                 {/* Right panel - Results area */}
                 <div style={{
-                    flex: 1,
                     minHeight: 'calc(100vh - 5.25rem)',
-                    position: 'relative',
+                    flex: '1',
+                    marginLeft: '-15rem',
                     backgroundColor: 'transparent',
                 }}>
                     {/* Placeholder message before first generation */}
@@ -115,22 +115,21 @@ export default function PlanningPage() {
                     )}
                     {/* Generated results: trip details on the left, map on the right */}
                     {result && (
-                        <div className="flex items-start w-full" style={{ padding: '2.9rem', gap: '0.6rem', flexWrap: 'nowrap' }}>
-                            <div className="min-w-0" style={{ flex: '1 1 660px', maxWidth: '800px' }}>
+                        <div className="flex justify-center" style={{ padding: '2.9rem', gap: '1rem' }}>
+                            <div style={{ maxWidth: '700px', width: '100%', position: 'relative' }}>
                                 <TripResults {...{ result, resultTripType, image, weather, saved, routeDistances }} onApprove={() => handleApprove(location, tripType)} />
                             </div>
                             {/* Leaflet map - reports geometry and distances back via onGeometryLoaded */}
                             <div style={{
-                                width: '650px',
-                                maxWidth: '100%',
-                                height: '700px',
-                                marginTop: '1rem',
+                                width: '600px',
+                                height: '650px',
+                                top: '0',
                                 borderRadius: '1rem',
                                 overflow: 'hidden',
-                                border: '2px solid hsl(0, 20%, 98%)',
+                                marginTop: '0.9rem',
+                                border: '2.5px solid hsla(0, 0%, 0%, 0.88)',
                                 boxShadow: '0px 3px 15px rgba(0, 0, 0, 0.35)',
                                 zIndex: 10,
-                                flexShrink: 0,
                             }}>
                                 <TripMap
                                     routes={result.routes}

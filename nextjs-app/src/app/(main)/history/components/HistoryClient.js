@@ -63,6 +63,7 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
             transparent 90.7%
         )`,
             minHeight: '100vh',
+            minWidth: '1800px',
             padding: '0.5rem',
             paddingTop: '1.4rem',
         }}>
@@ -148,7 +149,7 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                                                 <button
                                                     onClick={(e) => { e.stopPropagation(); setConfirmDelete(route._id); }}
                                                     className="absolute text-red-400 hover:text-red-600 transition-colors rounded-full hover:bg-red-100 cursor-pointer"
-                                                    style={{ right: '0.55rem', top: '3.2rem', padding: '0', width: '2.5rem', height: '2.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                                    style={{ right: '0.55rem', top: '2.3rem', padding: '0', width: '2.5rem', height: '2.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                                                     title="Delete route"
                                                 >
                                                     <svg style={{ width: '1.3rem', height: '1.3rem' }} viewBox="-2 0 18 14" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
