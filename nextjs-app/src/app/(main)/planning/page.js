@@ -73,7 +73,7 @@ export default function PlanningPage() {
                 transparent 90.7%
             )`,
             minHeight: '100vh',
-            minWidth: '2000px',
+            minWidth: '1280px',
         }}>
             {/* Two-column layout: form on left, results on right */}
             <div style={{
@@ -83,22 +83,25 @@ export default function PlanningPage() {
                 {/* Left panel - Planning Form */}
                 <div style={{
                     position: 'relative',
-                    width: '400px',
+                    width:'13vw',
+                    minWidth: '180px',
                     minHeight: '100vh',
                     marginLeft: '1.2rem',
                     backgroundColor: '#1A1A1A',
                     overflow: 'hidden',
                 }}>
-                    <h1 className={`${dancingScript.className} text-center text-white`} style={{ fontSize: '2.5rem', letterSpacing: '0.5rem', marginTop: '4.8rem', padding: '0.5rem 0' }}>Plan your trip</h1>
+                    <h1 className={`${dancingScript.className} text-center text-white`} style={{ fontSize: 'clamp(1.2rem, 1.5vw, 2.2rem)', letterSpacing: '0.5rem', paddingLeft: '0.5rem',marginTop: '4.8rem', padding: '0.5rem 0' }}>Plan your trip</h1>
                     <PlanningForm {...{ location, setLocation, tripType, setTripType, days, setDays, loading }} onSubmit={handleSubmit} />
                 </div>
 
                 {/* Right panel - Results area */}
                 <div style={{
+                    position: 'relative',
                     minHeight: 'calc(100vh - 5.25rem)',
-                    flex: '1',
-                    marginLeft: '-15rem',
+                    flex: 1,
+                    justifyContent: 'center',
                     backgroundColor: 'transparent',
+                    overflow: 'hidden'
                 }}>
                     {/* Placeholder message before first generation */}
                     {!hasGenerated && (
@@ -116,11 +119,12 @@ export default function PlanningPage() {
                     {/* Generated results: trip details on the left, map on the right */}
                     {result && (
                         <div className="flex justify-center" style={{ padding: '2.9rem', gap: '1rem' }}>
-                            <div style={{ maxWidth: '700px', width: '100%', position: 'relative' }}>
+                            <div style={{ flex: '1 1 700px',maxWidth: '800px', width: '100%', position: 'relative' }}>
                                 <TripResults {...{ result, resultTripType, image, weather, saved, routeDistances }} onApprove={() => handleApprove(location, tripType)} />
                             </div>
                             {/* Leaflet map - reports geometry and distances back via onGeometryLoaded */}
                             <div style={{
+                                flex: '0 1 600px',
                                 width: '600px',
                                 height: '650px',
                                 top: '0',

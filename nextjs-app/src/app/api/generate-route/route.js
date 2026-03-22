@@ -48,51 +48,44 @@ export async function POST(request) {
                 }
                 All waypoints MUST be on land (not in water, rivers, or oceans).
                 Return ONLY valid JSON, no extra text.`
-            : `Plan ${Math.min(days, 3)} round trip walking routes in ${location}.
+            : `You are a walking route planner.
 
-                STEP 1 - CHOOSE A CITY, THEN PICK ${Math.min(days, 3)} SEPARATE AREAS WITHIN IT:
-                - If "${location}" is a country, first choose ONE major city that best represents it.
+                Plan a round trip route for each day in ${location}.
+                Amount of days: ${days}.
+
+                **Step 1 - Choose your city and areas:**
+
+                - If "${location}" is a country, choose one major city that best represents it.
                 - If "${location}" is a city, use that city.
-                - If "${location}" is already a small town or specific area, use it and its immediate surroundings.
-                Then within that single city, pick ${Math.min(days, 3)} different areas for the ${Math.min(days, 3)} routes. These areas should be in different parts of the city — not adjacent, but not in separate cities either. Think opposite sides of the same city (e.g. for Rome: one route around Trastevere, another around the Vatican, another near the Colosseum).
-                Each route gets its own area. State it in the route's "area" field.
+                - If "${location}" is a small town or specific area, use it and its immediate surroundings.
 
-                STEP 2 - PLAN EACH ROUTE WITHIN ITS OWN AREA:
-                - Each route's waypoints must ALL be within a 3km radius of that route's chosen area center. No waypoint from one route should appear near another route's area.
-                - Each route should be 5-10 km total walking distance. Since all waypoints are within 3km of each other, the route loops and winds through the area rather than going in a straight line.
-                - Each route MUST be a round trip. The route will be closed automatically, so do NOT include the starting point again as the last waypoint.
-                - Zero overlap between routes. No two routes should share any waypoints or pass through the same streets/trails.
-                ROUTE DESIGN RULES:
-                - Include 8-10 waypoints per route.
-                - Each route should have a "setting" field: "urban" for city walks, "nature" for countryside/mountain/park hikes.
-                - For urban: use landmarks, squares, museums, markets, parks, churches, and viewpoints that are walking distance apart.
-                - For nature: use trailheads, viewpoints, lakes, waterfalls, shelters, and trail junctions that are hiking distance apart.
-                - All waypoint names must be real, well-known, and specific (e.g. "Piazza del Campo" not "main square").
-                - Waypoints must be on land and publicly accessible.
-                - Waypoints should form a loop-like shape, not a straight line.
+                These areas should be in different parts of the city - not adjacent, to avoid overlaps in trips.
 
-                DISTANCE CHECK:
-                - Before finalizing, verify that consecutive waypoints are 0.3-1.5 km apart from each other. If any two consecutive waypoints are more than 2km apart, you have chosen waypoints that are too far from each other. Replace them with closer ones.
+                **Step 2 - For each area, plan a round-trip walking route:**
 
-                Return a JSON object with this exact structure:
+                1. Return 4-7 waypoints that form a loop (the last waypoint should be near the first).
+                2. The total walking path distance MUST be under 10 km and MUST be over 5km. To enforce this, ensure the straight-line distance between each consecutive pair of waypoints does not exceed 1.5 km.
+                3. Each waypoint name must match its name on Google Maps exactly (as it would appear in a Google Maps search).
+                4. Set "setting" to "urban" for city walks, "nature" for countryside/park hikes.
+                5. Do not include any explanation, commentary, or markdown - return only the raw JSON.
+
+                **JSON format:**
+
                 {
                     "routes": [
                         {
                             "day": 1,
-                            "area": "The specific neighborhood/park you chose",
-                            "start": "Starting Point Name",
-                            "end": "Starting Point Name",
-                            "distance_km": 7,
-                            "description": "Brief description",
+                            "city": "The chosen city",
+                            "area": "The specific neighborhood/park chosen",
+                            "description": "Brief description of the route",
                             "setting": "urban or nature",
                             "waypoints": [
-                                {"lat": 0.0, "lng": 0.0, "name": "Point name"}
+                                {"lat": 0.0, "lng": 0.0, "name": "Exact Google Maps Name"}
                             ]
                         }
                     ],
                     "country": "${location}"
-                }
-                Return ONLY valid JSON, no extra text.`
+                }`
 
         // Call Groq API
         const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -113,7 +106,7 @@ export async function POST(request) {
                         "content": prompt,
                     }
                 ],
-                "temperature": 1.0,
+                "temperature": 0.5,
             }),
         });
 
@@ -128,9 +121,18 @@ export async function POST(request) {
         }
         const routeData = JSON.parse(jsonMatch[0]);
 
+        for (const route of routeData.routes) {
+            if (route.waypoints.length > 7) {
+                route.waypoints = route.waypoints.slice(0, 7);
+            }
+        }
+
         // Replace Groq's guessed coordinates with real ones from Google Geocoding API for better routing results
         for (const route of routeData.routes) {
-            const geocodeContext = route.area ? `${route.area}, ${location}` : location;
+            const geocodeContext = route.city ? `${route.area}, ${route.city}, ${location}`
+                : route.area
+                    ? `${route.area}, ${location}`
+                    : location;
             for (const waypoint of route.waypoints) {
                 const real = await geocodeWaypoint(waypoint.name, geocodeContext);
                 if (real) {
@@ -140,6 +142,18 @@ export async function POST(request) {
                 // If geocoding fails, Groq's original coordinates are kept
             }
         }
+
+        // Remove waypoints that geocoded to the same coordinates as another waypoint
+        for (const route of routeData.routes) {
+            const seen = new Set();
+            route.waypoints = route.waypoints.filter(wp => {
+                const key = `${wp.lat.toFixed(5)},${wp.lng.toFixed(5)}`;
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            });
+        }
+
         // Remove outlier waypoints that geocoded to the wrong location (cycling only)
         if (tripType === "cycling") {
             for (const route of routeData.routes) {
@@ -149,11 +163,11 @@ export async function POST(request) {
                     const prev = arr[Math.max(0, idx - 1)];
                     const next = arr[Math.min(arr.length - 1, idx + 1)];
                     if (prev === wp || next === wp) return true;
-                    
+
                     const distToPrev = Math.sqrt(Math.pow(wp.lat - prev.lat, 2) + Math.pow(wp.lng - prev.lng, 2));
                     const distToNext = Math.sqrt(Math.pow(wp.lat - next.lat, 2) + Math.pow(wp.lng - next.lng, 2));
                     const prevToNext = Math.sqrt(Math.pow(prev.lat - next.lat, 2) + Math.pow(prev.lng - next.lng, 2));
-                    
+
                     // If this point is much farther from both neighbors than they are from each other, it's an outlier
                     // 0.5 degrees ≈ 55km, so this catches points that are way off
                     const maxNeighborDist = Math.max(distToPrev, distToNext);

@@ -1,14 +1,19 @@
 "use client";
-// Client-side history UI - receives pre-fetched routes from server component
+// Client-side history UI - fetches and caches routes with SWR
 import { useState, useRef } from "react";
 import axios from "axios";
+import useSWR from "swr";
 import TripCard from "./TripCard";
 import TripDetails from "./TripDetails";
 import dynamic from "next/dynamic";
+
+// SWR fetcher - calls proxy API and returns the routes array
+const fetcher = (url) => axios.get(url).then((res) => res.data.routes);
 const TripMap = dynamic(() => import("@/components/TripMap"), { ssr: false });
 
-export default function HistoryClient({ routes: initialRoutes, serverError }) {
-    const [routes, setRoutes] = useState(initialRoutes);
+export default function HistoryClient() {
+    // SWR caches routes in memory, then revalidates in the background
+    const { data: routes = [], error: serverError, mutate } = useSWR("/api/get-saved-routes", fetcher);
     const [selectedRoute, setSelectedRoute] = useState(null);
     const [deleteMode, setDeleteMode] = useState(false);
     const [weather, setWeather] = useState(null);
@@ -38,7 +43,8 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
     async function handleDeleteRoute(routeId) {
         try {
             await axios.delete("/api/delete-route", { data: { id: routeId } });
-            setRoutes(prev => prev.filter(r => r._id !== routeId));
+            // Update SWR cache locally without refetching
+            mutate(routes.filter(r => r._id !== routeId), false);
             if (selectedRoute?._id === routeId) setSelectedRoute(null);
         } catch (err) {
             console.error("Failed to delete route:", err);
@@ -63,18 +69,18 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
             transparent 90.7%
         )`,
             minHeight: '100vh',
-            minWidth: '1800px',
+            minWidth: 'max(1280px, 100vw)',
+            width: 'fit-content',
             padding: '0.5rem',
             paddingTop: '1.4rem',
         }}>
             <div style={{
-                maxWidth: '1050px',
+                maxWidth: '1000px',
                 margin: '0 auto',
                 marginTop: '5.5rem',
                 backgroundColor: 'rgb(233, 232, 232)',
                 borderRadius: '1rem',
                 padding: '2.4rem 3.8rem',
-                minHeight: '80vh',
             }}>
                 <div className="flex justify-center items-center relative" style={{ marginBottom: '0.35rem' }}>
                     <h1 className="font-bold text-center text-black" style={{ fontSize: '2.6rem', paddingTop: '0.75rem', paddingBottom: '2.4rem' }}>
@@ -96,7 +102,7 @@ export default function HistoryClient({ routes: initialRoutes, serverError }) {
                 </div>
                 {serverError && <p className="text-red-500 text-center">{serverError}</p>}
                 {!serverError && routes.length === 0 && (
-                    <p className="font-bold text-center text-gray-600" style={{marginTop: '9.5rem', fontSize: '1.4rem' }}>No saved routes yet. Plan a trip first!</p>
+                    <p className="font-bold text-center text-gray-600" style={{ marginTop: '9.5rem', fontSize: '1.4rem' }}>No saved routes yet. Plan a trip first!</p>
                 )}
                 {routes.length > 0 && (
                     <div className="flex justify-center" style={{ gap: '2rem', position: 'relative' }}>

@@ -93,19 +93,15 @@ export default function Home() {
       <div className="h-screen flex flex-col items-end justify-start"
         style={{
           position: 'relative',
+          minWidth: '900px',
+          minHeight: '680px',
           scrollSnapAlign: 'start',
           paddingTop: '6.5%',
-          backgroundImage: "url('/website_background3.png')",
+          backgroundImage: "url('/website_background (2).png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
         }}>
-        <h1 className="font-bold text-black" style={{ fontSize: 'clamp(2rem, 3.5vw, 8.5rem)', marginBottom: '2rem' }}>
-          <div style={{ position: 'relative', right: '6.7vw', marginTop: '2.2%' }}>מסלול</div>
-          <div style={{ position: 'relative', right: '24vw', marginTop: '-2.5%' }}>טיולים</div>
-          <div style={{ position: 'relative', right: '35vw', marginTop: '-1%' }}>אפקה</div>
-          <div style={{ position: 'relative', right: '43vw', marginTop: '1.3%', color: 'white', fontSize: 'clamp(3rem, 6vw, 14.5rem)' }}>2026</div>
-        </h1>
         {/* Scroll-down arrow indicator - fades out when leaving section 0 */}
         <div style={{
           position: 'absolute',
@@ -134,13 +130,15 @@ export default function Home() {
       <div className="h-screen flex flex-col items-center justify-center"
         style={{
           position: 'relative',
+          minWidth: '900px',
+          minHeight: '680px',
           scrollSnapAlign: 'start',
           backgroundImage: "url('/homePageBackground.jpg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
         }}>
-        <p className="text-white font-bold" style={{ fontSize: '2.25rem', marginBottom: '1rem' }}>Fill Out The Form To Start</p>
+        <p className="text-white font-bold" style={{ fontSize: 'clamp(1.2rem, 3.5vw, 2.25rem', marginBottom: '1rem' }}>Fill Out The Form To Start</p>
         <div style={{ width: 'min(28rem, 90vw)', borderRadius: '1rem', overflow: 'hidden' }}>
           <PlanningForm
             location={location}
@@ -168,8 +166,8 @@ export default function Home() {
           alignItems: 'center',
         }}>
           <div style={{ animation: 'float 2s ease-in-out infinite' }}>
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 1, transform: 'rotate(180deg)' }}>
-              <path d="M12 5v14" />
+            <svg width="3vw" height="3vw" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+              style={{ opacity: 1, transform: 'rotate(180deg)', minWidth: '24px', minHeight: '24px', maxWidth: '48px', maxHeight: '48px' }}>              <path d="M12 5v14" />
               <path d="M19 12l-7 7-7-7" />
             </svg>
           </div>
