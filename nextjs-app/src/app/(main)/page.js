@@ -87,14 +87,23 @@ export default function Home() {
     return () => el.removeEventListener('wheel', handleWheel);
   }, []);
 
+  // Makes sure window resizing doesn't leak top section image when on bottom section
+  useEffect(() => {
+    function handleResize() {
+      const el = containerRef.current;
+      if (!el) return;
+      el.scrollTop = activeSectionRef.current * el.clientHeight;
+    }
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div ref={containerRef} style={{ height: '100vh', overflowY: 'hidden' }}>
       {/* Hero section - background image with Hebrew title */}
       <div className="h-screen flex flex-col items-end justify-start"
         style={{
           position: 'relative',
-          minWidth: '900px',
-          minHeight: '680px',
           scrollSnapAlign: 'start',
           paddingTop: '6.5%',
           backgroundImage: "url('/website_background (2).png')",
@@ -125,21 +134,42 @@ export default function Home() {
           </div>
         </div>
       </div>
-
+      
       {/* Form section - quick planning form that redirects to /planning */}
       <div className="h-screen flex flex-col items-center justify-center"
         style={{
           position: 'relative',
-          minWidth: '900px',
-          minHeight: '680px',
           scrollSnapAlign: 'start',
           backgroundImage: "url('/homePageBackground.jpg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
         }}>
+
+        {/* Scroll-up arrow indicator - fades in when on section 1 */}
+        <div style={{
+          opacity: activeSection === 1 ? 1 : 0,
+          transitionProperty: 'opacity',
+          transitionDuration: '2s',
+          transitionDelay: activeSection === 1 ? '0.5s' : '0s',
+          display: 'flex',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          marginBottom: '0.5rem',
+        }}>
+          <div style={{ animation: 'float 2s ease-in-out infinite' }}>
+            <svg width="3vw" height="3vw" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+              style={{ opacity: 1, transform: 'rotate(180deg)', minWidth: '24px', minHeight: '24px', maxWidth: '48px', maxHeight: '48px' }}>
+              <path d="M12 5v14" />
+              <path d="M19 12l-7 7-7-7" />
+            </svg>
+          </div>
+          <p className="text-white font-semibold" style={{ letterSpacing: '0.075rem', fontSize: '1.1rem', marginTop: '0.9rem' }}>Return</p>
+        </div>
+
         <p className="text-white font-bold" style={{ fontSize: 'clamp(1.2rem, 3.5vw, 2.25rem', marginBottom: '1rem' }}>Fill Out The Form To Start</p>
-        <div style={{ width: 'min(28rem, 90vw)', borderRadius: '1rem', overflow: 'hidden' }}>
+        <div style={{ width: 'clamp(16rem, 50vw, 28rem)', borderRadius: '1rem', overflow: 'hidden' }}>
           <PlanningForm
             location={location}
             setLocation={setLocation}
@@ -150,28 +180,6 @@ export default function Home() {
             loading={false}
             onSubmit={handleHomeSubmit}
           />
-        </div>
-        {/* Scroll-up arrow indicator - fades in when on section 1 */}
-        <div style={{
-          position: 'absolute',
-          top: '9.5rem',
-          opacity: activeSection === 1 ? 1 : 0,
-          transitionProperty: 'opacity',
-          transitionDuration: '2s',
-          transitionDelay: activeSection === 1 ? '0.5s' : '0s',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}>
-          <div style={{ animation: 'float 2s ease-in-out infinite' }}>
-            <svg width="3vw" height="3vw" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-              style={{ opacity: 1, transform: 'rotate(180deg)', minWidth: '24px', minHeight: '24px', maxWidth: '48px', maxHeight: '48px' }}>              <path d="M12 5v14" />
-              <path d="M19 12l-7 7-7-7" />
-            </svg>
-          </div>
-          <p className="text-white font-semibold" style={{ letterSpacing: '0.075rem', fontSize: '1.1rem', marginTop: '0.9rem' }}>Return</p>
         </div>
       </div>
     </div>
