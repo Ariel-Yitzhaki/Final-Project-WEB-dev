@@ -2,20 +2,49 @@
 
 An AI-powered trip planning web app that generates cycling and trekking routes for any location. Users can plan multi-day trips, view routes on an interactive map with real road/trail geometry, check weather forecasts, save trips, and export them as PDFs.
 
-Live site: https://my-tripplanner-ai.vercel.app
+Note: The backend is hosted on Render's free tier, so the first request after a period of inactivity may take up to a minute while the server spins back up.
+
+Live site: https://my-tripplanner-ai.vercel.app  
+![Video Project 2](https://github.com/user-attachments/assets/abf664cb-2b0a-4e6a-96e7-642bc19be481)
+<br><br><br>
 
 ## Features
 
-- **AI Route Generation** — Uses Groq (Llama 3.3 70B) to plan multi-day cycling or trekking routes with real waypoints
-- **Interactive Map** — Leaflet-based map with route geometry from Google Directions API and OpenRouteService (for nature trails)
-- **Google Places Autocomplete** — Location search with city suggestions
-- **Weather Forecasts** — 3-day forecasts via OpenWeatherMap for trip destinations
-- **Location Images** — Landscape photos from Unsplash for each trip
-- **Save & Manage Trips** — Authenticated users can save, view, and delete past trips
-- **PDF Export** — Export trip details as a downloadable PDF
-- **JWT Authentication** — Secure login/register with HTTP-only cookie tokens and silent refresh
+### Route Planning <img align="right" width="500" src="https://github.com/user-attachments/assets/f9c45a5a-639b-4b3d-ae18-b274932fe857">
 
-## Tech Stack
+- Plan multi-day cycling or trekking routes for any location
+- Routes follow real roads and trails via Google Directions API and OpenRouteService
+- Interactive Leaflet map displays waypoints, routes and total trip length
+- Location search with Google Places Autocomplete
+- 3-day weather forecast for the trip destination via OpenWeatherMap
+- Landscape photo for the destination pulled from Unsplash
+- Approve and save generated routes to the database
+<br clear="right">
+<br><br>
+
+
+
+### Trip History <img align="right" width="350" height="250" alt="image" src="https://github.com/user-attachments/assets/ff122306-8681-49b5-95d2-6f7ede6e55f5" />
+
+- View all previously saved trips with route details and map
+- Delete saved trips
+- Expand a trip to see its full breakdown with an updated weather forecast
+- Export a saved trip as a PDF
+
+<br clear="right">
+<br><br>
+
+
+### Authentication <img align="right" width="250" alt="image" src="https://github.com/user-attachments/assets/fdd5634a-de2c-4c7b-bf67-65a948516166" />
+
+- User registration and login with hashed passwords (bcrypt + salt) 
+- JWT tokens stored in HTTP-only cookies
+- Silent token refresh when the token is close to expiring
+- Next.js middleware protects all pages — unauthenticated users are redirected to login
+<br clear="right">
+
+
+### Tech Stack
 
 | Layer | Technologies |
 |-------|-------------|
@@ -53,7 +82,7 @@ Live site: https://my-tripplanner-ai.vercel.app
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) (v18 or higher)
-- A [MongoDB](https://www.mongodb.com/) instance — local installation or [MongoDB Atlas](https://www.mongodb.com/atlas) (free tier works)
+- A [MongoDB](https://www.mongodb.com/) instance - local installation or [MongoDB Atlas](https://www.mongodb.com/atlas) (free tier works)
 - API keys from the following services:
 
 | Service | Sign up | Used for |
@@ -111,15 +140,15 @@ JWT_SECRET=               # Must be the same value as in express-auth-server/.en
 You need two terminal windows:
 
 ```bash
-# Terminal 1 — Backend
+# Terminal 1 - Backend
 cd express-auth-server
 npm start
 ```
 
 ```bash
-# Terminal 2 — Frontend
+# Terminal 2 - Frontend
 cd nextjs-app
 npm run dev
 ```
 
-The app will be available at `http://localhost:3000`.
+The application will be available at `http://localhost:3000`.
