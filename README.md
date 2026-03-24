@@ -43,9 +43,9 @@ Live site: https://my-tripplanner-ai.vercel.app
 - Silent token refresh when the token is close to expiring
 - Next.js middleware protects all pages — unauthenticated users are redirected to login
 <br clear="right">
+<br>
 
-
-### Tech Stack
+## Tech Stack
 
 | Layer | Technologies |
 |-------|-------------|
@@ -53,6 +53,7 @@ Live site: https://my-tripplanner-ai.vercel.app
 | Backend | Express 5, MongoDB / Mongoose 9, bcrypt, JSON Web Tokens |
 | AI | Groq API (Llama 3.3 70B Versatile) |
 | External APIs | Google Maps (Geocoding, Directions, Places), OpenWeatherMap, Unsplash, OpenRouteService |
+<br>
 
 ## Project Structure
 
@@ -77,6 +78,7 @@ Live site: https://my-tripplanner-ai.vercel.app
     │   └── middleware.js     # JWT verification & silent token refresh
     └── public/              # Static assets & fonts
 ```
+<br>
 
 ## Setup instructions
 
