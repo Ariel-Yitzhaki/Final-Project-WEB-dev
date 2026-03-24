@@ -2,16 +2,16 @@
 
 An AI-powered trip planning web app that generates cycling and trekking routes for any location. Users can plan multi-day trips, view routes on an interactive map with real road/trail geometry, check weather forecasts, save trips, and export them as PDFs.
 
-Note: The backend is hosted on Render's free tier, so the first request after a period of inactivity may take up to a minute while the server spins back up.
+**Note**: The backend is hosted on Render's free tier, so the first request after a period of inactivity may take up to a minute while the server spins back up.
 
 Live site: https://my-tripplanner-ai.vercel.app  
-![Video Project 2](https://github.com/user-attachments/assets/abf664cb-2b0a-4e6a-96e7-642bc19be481)
+<img width="960" src="https://github.com/user-attachments/assets/97892c64-adf4-4056-b06f-b353c303588a">
 <br><br><br>
+
 
 ## Features
 
-### Route Planning <img align="right" width="500" src="https://github.com/user-attachments/assets/f9c45a5a-639b-4b3d-ae18-b274932fe857">
-
+### Route Planning
 - Plan multi-day cycling or trekking routes for any location
 - Routes follow real roads and trails via Google Directions API and OpenRouteService
 - Interactive Leaflet map displays waypoints, routes and total trip length
@@ -19,12 +19,13 @@ Live site: https://my-tripplanner-ai.vercel.app
 - 3-day weather forecast for the trip destination via OpenWeatherMap
 - Landscape photo for the destination pulled from Unsplash
 - Approve and save generated routes to the database
-<br clear="right">
+<img width="800" src="https://github.com/user-attachments/assets/5cacc3ea-3873-44a5-8186-82c75f1e3e61">
+
 <br><br>
 
 
 
-### Trip History <img align="right" width="350" height="250" alt="image" src="https://github.com/user-attachments/assets/ff122306-8681-49b5-95d2-6f7ede6e55f5" />
+### Trip History <img align="right" width="400" height="300" alt="image" src="https://github.com/user-attachments/assets/ff122306-8681-49b5-95d2-6f7ede6e55f5" />
 
 - View all previously saved trips with route details and map
 - Delete saved trips
