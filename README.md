@@ -2,7 +2,7 @@
 
 An AI-powered trip planning web app that generates cycling and trekking routes for any location. Users can plan multi-day trips, view routes on an interactive map with real road/trail geometry, check weather forecasts, save trips, and export them as PDFs.
 
-Live site: https://final-project-web-dev-seven.vercel.app
+Live site: https://my-tripplanner-ai.vercel.app
 
 ## Features
 
